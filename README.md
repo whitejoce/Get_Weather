@@ -2,9 +2,9 @@
 
 * GetWeather.py
  
-Python版本: 3.x
+    Python版本: 3.x
 
-通过获取IP定位，爬取当地的天气
+    通过获取IP定位，爬取当地的天气
 
 * * *
 
