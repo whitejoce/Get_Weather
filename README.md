@@ -9,6 +9,7 @@
 *   实现方法：
 
     通过获取IP定位，爬取当地的天气
+    天气来源网站[Weather](http://www.weather.com.cn/)；
 
 * * *
 
