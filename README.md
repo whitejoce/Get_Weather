@@ -1,7 +1,5 @@
 # Get_Weather
 
-* * *
-
 * Toolbox
  
 Python版本: 3.x
