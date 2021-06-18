@@ -1,7 +1,20 @@
 # Get_Weather
+
+* * *
+
+* Toolbox
+ 
+Python版本: 3.x
+
 通过获取IP定位，爬取当地的天气
 
-***
+* * *
+
+*   使用方法:
+    
+     `~#: python ./GetWeather.py`
+
+* * *
 
 * 效果：
 
