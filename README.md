@@ -39,11 +39,9 @@
 * * *
    >提供接口的相关信息，供大家自定义天气窗口
    >
-   > 接口1:`http://d1.weather.com.cn/weather_index/`[城市ID]`.html?_=`[时间戳(毫秒)]
+   > 接口1(v2.0使用):`http://d1.weather.com.cn/sk_2d/`[城市ID]`.html?_=`[时间戳(毫秒)]
    >
-   > 接口2:`http://d1.weather.com.cn/dingzhi/`[城市ID]`.html?_=`[时间戳(毫秒)]
-   >
-   > 接口3(v2.0使用):`http://d1.weather.com.cn/sk_2d/`[城市ID]`.html?_=`[时间戳(毫秒)]
+   > 接口2(v3.0将使用，最全接口):`http://d1.weather.com.cn/weather_index/`[城市ID]`.html?_=`[时间戳(毫秒)]
    >
    >以此数据结构为例：
         
