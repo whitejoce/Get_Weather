@@ -12,6 +12,10 @@
     > 
     > 脚本中采用的接口不同于网上（网上的的接口天气不更新了），应该是“全网首发”   ; )
     >
+    >定位IP网站[jsonip](http://jsonip.com);
+    >
+    >IP查询网站[chinaz](http://mip.chinaz.com);
+    >
     > 天气来源网站[Weather](http://www.weather.com.cn/)；
 
 * * *
