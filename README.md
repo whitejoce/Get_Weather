@@ -2,7 +2,7 @@
  
  * 关于
  
-      许可声明：本代码仓库采用MIT许可协议（The MIT License）
+      许可声明：本代码仓库采用MIT许可协议（[The MIT License](https://github.com/whitejoce/Get_Weather/blob/main/LICENSE)）
  
       如果对此脚本感兴趣，还请星标，感谢支持！:)
  
