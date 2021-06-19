@@ -83,12 +83,12 @@ def get_weather(City_code):
     aqi_pm25 = re.findall(r'"aqi_pm25":"(.*?)"',aqi_pm25)
     aqi_pm25 = "".join(aqi_pm25)
     #降雨指数
-    rain = wea_list[14]
-    rain = re.findall(r'"rain":"(.*?)"',rain)
-    rain = "".join(rain)
-    rain24h = wea_list[15]
-    rain24h = re.findall(r'"rain24h":"(.*?)"',rain24h)
-    rain24h = "".join(rain24h)
+    #rain = wea_list[14]
+    #rain = re.findall(r'"rain":"(.*?)"',rain)
+    #rain = "".join(rain)
+    #rain24h = wea_list[15]
+    #rain24h = re.findall(r'"rain24h":"(.*?)"',rain24h)
+    #rain24h = "".join(rain24h)
     #时间
     time = wea_list[13]
     time = re.findall(r'"time":"(.*?)"',time)
@@ -104,7 +104,7 @@ def get_weather(City_code):
     print(" 天气状况:  "+wea_now)
     print(" 实时温度:  "+temp_now+"℃")
     print(" 空气湿度:  "+wet)
-    print(" 降雨概率:  "+rain +"% ,24小时内降水: "+rain24h+"%")
+    #print(" 降雨概率:  "+rain +"% ,24小时内降水: "+rain24h+"%")
     print(" PM2.5指数: "+aqi_pm25)
     print(" [更新时间: "+date+" "+time +"]")
     print(" =================================")
