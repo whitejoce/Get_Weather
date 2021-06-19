@@ -2,7 +2,7 @@
 
 * GetWeather.py
  
-    Python版本: 3.x
+     Python版本: 3.x
 
 * * *
 
