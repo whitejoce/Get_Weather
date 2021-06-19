@@ -18,7 +18,8 @@
 
 * * *
    >以此数据结构为例：
-         dataSK={
+        
+        dataSK={
                  "nameen":"beijing",              城市英文
                  "cityname":"北京",               城市名称
                  "city":"101010100",              城市编号
