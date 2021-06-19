@@ -57,7 +57,7 @@ def get_weaPage(url):
 def get_weather(City_code):
     
     #num_str的长度为13
-    num_str = ''.join(str(random.choice(range(10))) for _ in range(13))
+    num_str = ''.join(str(random.choice(range(10))) for i in range(13))
     port = "http://d1.weather.com.cn/sk_2d/"+City_code+".html?_="+num_str
 
     html1 = get_weaPage(port)
