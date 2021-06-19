@@ -60,12 +60,12 @@
                   "njd":"26km",                      #能见度
                   "time":"09:40",                    #数据更新时间
                   "rain":"0",                        #降雨概率
-                  "rain24h":"0",
-                  "aqi":"35",                        #降雨概率（24小时内）
-                  "aqi_pm25":"35",                   #空气质量
-                  "weather":"晴",                    #PM2.5指数
-                  "weathere":"Sunny",                #天气状况
-                  "weathercode":"d00",               #天气状况（英语）
+                  "rain24h":"0",                     #降雨概率（24小时内）
+                  "aqi":"35",                        #空气质量
+                  "aqi_pm25":"35",                   #PM2.5指数
+                  "weather":"晴",                    #天气状况
+                  "weathere":"Sunny",                #天气状况（英语）
+                  "weathercode":"d00",
                   "limitnumber":"不限行",             #城市限行
                   "date":"06月19日(星期六)",          #日期
                 }
