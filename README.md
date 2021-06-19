@@ -20,7 +20,7 @@
 
 *   使用方法:
     
-     `~#: python ./GetWeather.py`
+     `~$: python ./GetWeather.py`
 
 * * *
 
