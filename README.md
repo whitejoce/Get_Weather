@@ -24,7 +24,7 @@
     >
     >IP查询网站: [chinaz](http://mip.chinaz.com);
     >
-    > 天气来源网站: [中国天气网 ](http://www.weather.com.cn/),[和风天气](https://www.qweather.com/)；
+    > 天气数据来源网站: [中国天气网 ](http://www.weather.com.cn/),[和风天气](https://www.qweather.com/)；
 
 * * *
 
