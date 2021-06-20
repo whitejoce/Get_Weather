@@ -121,7 +121,7 @@
                   "weathere":"Sunny",                #天气状况（英语）
                   "weathercode":"d00",
                   "limitnumber":"不限行",             #城市限行
-                  "date":"06月19日(星期六)"         #日期
+                  "date":"06月19日(星期六)"           #日期
                 };
                 
            
