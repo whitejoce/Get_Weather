@@ -1,9 +1,3 @@
-<p align="left">
-  <a href="https://docs.python.org/3/download.html">
-    <img src="https://img.shields.io/badge/Python-3.x-green.svg">
-  </a>
-</p>
-
 
 # Get_Weather
  
@@ -14,6 +8,12 @@
       如果对此脚本感兴趣，还请星标，感谢支持！:)
  
 * * *
+
+<p align="left">
+  <a href="https://docs.python.org/3/download.html">
+    <img src="https://img.shields.io/badge/Python-3.x-green.svg">
+  </a>
+</p>
 
 * GetWeather.py
  
