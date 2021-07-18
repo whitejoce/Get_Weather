@@ -6,10 +6,6 @@
       这个脚本是写给那个我喜欢的女孩，今天是删好友的第10天，这个代码库也不再维护了。 Date:2021/7/18
       [我多么希望...](https://github.com/whitejoce/her)
  
- * 关于
- 
-      本代码仓库采用MIT许可协议（[The MIT License](https://github.com/whitejoce/Get_Weather/blob/main/LICENSE)）
- 
 * * *
 
 * GetWeather.py
