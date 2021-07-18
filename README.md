@@ -4,7 +4,7 @@
  * 作者的话
       
       这个脚本是写给那个我喜欢的女孩，今天是和她失去联系的第10天，这个代码库也不再维护了。 Date:2021/7/18
-      （[我多么希望...](https://github.com/whitejoce/her)）
+      [我多么希望...](https://github.com/whitejoce/her)
  
  * 关于
  
