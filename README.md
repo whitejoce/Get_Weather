@@ -1,9 +1,9 @@
 
 # Get_Weather
  
- * 作者的话
-      
-      这个脚本是给我曾经喜欢的女孩写的，这个代码库不再维护了。 Date:2021/7/18
+ * 关于
+
+      本代码仓库采用MIT许可协议（[The MIT License](https://github.com/whitejoce/Get_Weather/blob/main/LICENSE)）
  
 * * *
 
