@@ -3,6 +3,8 @@
  
  * 关于
 
+      这个脚本是给我曾经喜欢的女孩写的，今天是她离开的第10天，这个代码库也不再维护了。 Date:2021/7/18
+      
       本代码仓库采用MIT许可协议（[The MIT License](https://github.com/whitejoce/Get_Weather/blob/main/LICENSE)）
  
 * * *
