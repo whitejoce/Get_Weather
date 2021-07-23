@@ -3,7 +3,7 @@
  
  * 关于
       
-      这个代码是那个她写的，代码没什么好改的，这个代码库也不再维护了。 Date:2021/7/23
+      这个代码是为她写的，代码没什么好改的，这个代码库也不再维护了。 Date:2021/7/23
       
       本代码仓库采用MIT许可协议（[The MIT License](https://github.com/whitejoce/Get_Weather/blob/main/LICENSE)）
  
