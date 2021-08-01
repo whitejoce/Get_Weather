@@ -14,7 +14,6 @@
        <img src="https://img.shields.io/badge/Python-3.x-green.svg">
      </a>
    </p>
-    经测试：不支持Python 3.9及以上版本
 
 * * *
 
