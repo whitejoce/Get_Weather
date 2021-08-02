@@ -4,7 +4,9 @@
  * 关于
       
       本代码仓库采用MIT许可协议（[The MIT License](https://github.com/whitejoce/Get_Weather/blob/main/LICENSE)）
- 
+      
+      此代码是为那个她写的，花了一点时间写的，开源出来方便当作天气工具使用    Date:2021/8/2
+      
 * * *
 
 * GetWeather.py
