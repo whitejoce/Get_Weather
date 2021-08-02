@@ -7,6 +7,8 @@
       
       此代码是为那个她写的，花了一点时间，开源出来方便当作天气工具使用   [ Date:2021/8/2 ]
       
+      生活助手整合了此脚本[LifeHelper](https://github.com/whitejoce/Code/blob/main/LifeHelper.py)
+      
 * * *
 
 * GetWeather.py
