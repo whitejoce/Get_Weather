@@ -5,7 +5,7 @@
       
       本代码仓库采用MIT许可协议（[The MIT License](https://github.com/whitejoce/Get_Weather/blob/main/LICENSE)）
       
-      突发奇想，开源出来方便当作天气工具使用   [ Date:2021/8/2 ]
+      开源出来方便当作天气工具使用   [ Date:2021/8/2 ]
       
       我的Code代码仓库整合了此脚本(生活助手):[LifeHelper.py](https://github.com/whitejoce/Code/blob/main/Code/LifeHelper.py)
       
