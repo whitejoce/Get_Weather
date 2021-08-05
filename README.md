@@ -18,6 +18,8 @@
        <img src="https://img.shields.io/badge/Python-3.x-green.svg">
      </a>
    </p>
+  
+  >要求安装`requests,BeautifulSoup`库
 
 * * *
 
