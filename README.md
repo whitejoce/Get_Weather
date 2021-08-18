@@ -72,7 +72,7 @@
          `[cityDZ,alarmDZ,dataSK,dataZS]`
        
        
-       cityDZ ={
+        cityDZ ={
                    "weatherinfo":{
                    "city":"北京",                   #城市英文名
                    "cityname":"beijing",            #城市名称
