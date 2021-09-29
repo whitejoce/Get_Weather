@@ -12,7 +12,7 @@ import urllib as urlparse
 import http.client
 
 #输出模式，0为shell输出，1为窗口输出(窗口仅输出天气信息)
-output=1
+output=0
 
 def get_CityName():
     try:
