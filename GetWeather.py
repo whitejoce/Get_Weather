@@ -105,7 +105,7 @@ def get_weather(City_code):
     mintemp = GetItem(mintemp,"tempn")
     #实时天气
     wea_now = wea_list1[4]
-    wea_now=GetItem(wea_now,"weather")
+    wea_now = GetItem(wea_now,"weather")
     
     #alarmDZ
     #-----------------------------------------------------
@@ -121,28 +121,28 @@ def get_weather(City_code):
     #dataSK
     #-----------------------------------------------------
     html3 = wea_list_all[3]
-    wea_list3= html3.split(",")
+    wea_list3 = html3.split(",")
     #城市
     cityname = wea_list3[1]
-    cityname=GetItem(cityname,"cityname")
+    cityname = GetItem(cityname,"cityname")
     #当前温度
     temp_now = wea_list3[3]
-    temp_now=GetItem(temp_now,"temp")
+    temp_now = GetItem(temp_now,"temp")
     #湿度
     wet = wea_list3[9]
-    wet=GetItem(wet,"SD")
+    wet = GetItem(wet,"SD")
     #时间
     update = wea_list3[13]
-    update=GetItem(update,"time")
+    update = GetItem(update,"time")
     #空气质量
     aqi = wea_list3[16]
-    aqi=GetItem(aqi,"aqi")
+    aqi = GetItem(aqi,"aqi")
     #PM2.5
     aqi_pm25 = wea_list3[17]
-    aqi_pm25=GetItem(aqi_pm25,"aqi_pm25")
+    aqi_pm25 = GetItem(aqi_pm25,"aqi_pm25")
     #日期
     date = wea_list3[22]
-    date=GetItem(date,"date")
+    date = GetItem(date,"date")
     #-----------------------------------------------------
 
     #dataZS
@@ -152,7 +152,7 @@ def get_weather(City_code):
     #ataZS=re.findall(r',"(.*?)":',wea_list4)
     ##print(dataZS)
     #-----------------------------------------------------
-    umbrella=GetItem(wea_list4,"ys_des_s")
+    umbrella = GetItem(wea_list4,"ys_des_s")
 
     #和风天气
     headers2 = {
@@ -163,8 +163,8 @@ def get_weather(City_code):
     wea_comment = re.findall(r'<p class="c-city-weather-current__abstract">(.*?)</p>',qwea_html,flags=16)
     wea_comment = "".join(wea_comment)
     aqi_level = re.findall(r'<p class="air-chart-container__aqi-level">(.*?)</p>',qwea_html,flags=16)
-    aqi_level=aqi_level[0].replace("\n","")
-    aqi_level=aqi_level.replace(" ","")
+    aqi_level = aqi_level[0].replace("\n","")
+    aqi_level = aqi_level.replace(" ","")
     #wea_comment = wea_comment.strip('\n')
     wea_comment = wea_comment.replace(" ","").replace("\n","") 
     
