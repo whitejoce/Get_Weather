@@ -58,10 +58,10 @@ def get_weaPage(url,headers):
     html = bs.prettify()
     return html
 
-def CheckInput(inputstring):
-    if any(char.isdigit() for char in inputstring):
+def CheckInput(InputString):
+    if any(char.isdigit() for char in InputString):
         return True
-    match = re.search('[a-zA-Z]+$',inputstring)
+    match = re.search('[a-zA-Z]+$',InputString)
     if match:
         return True
     return False
@@ -85,9 +85,9 @@ def get_weather(City_code):
     timestamp = str(int(round(t * 1000)))
     port = "http://d1.weather.com.cn/weather_index/"+City_code+".html?_="+timestamp
     html = get_weaPage(port,headers1)
-    ##print(html)
+    #print(html)
     wea_list_all= html.split("var")
-    ##print(wea_list_all)
+    #print(wea_list_all)
 
     #cityDZ
     #-----------------------------------------------------
@@ -105,7 +105,7 @@ def get_weather(City_code):
     mintemp = GetItem(mintemp,"tempn")
     #实时天气
     wea_now = wea_list1[4]
-    wea_now = GetItem(wea_now,"weather")
+    wea_now=GetItem(wea_now,"weather")
     
     #alarmDZ
     #-----------------------------------------------------
@@ -121,28 +121,28 @@ def get_weather(City_code):
     #dataSK
     #-----------------------------------------------------
     html3 = wea_list_all[3]
-    wea_list3 = html3.split(",")
+    wea_list3= html3.split(",")
     #城市
     cityname = wea_list3[1]
-    cityname = GetItem(cityname,"cityname")
+    cityname=GetItem(cityname,"cityname")
     #当前温度
     temp_now = wea_list3[3]
-    temp_now = GetItem(temp_now,"temp")
+    temp_now=GetItem(temp_now,"temp")
     #湿度
     wet = wea_list3[9]
-    wet = GetItem(wet,"SD")
+    wet=GetItem(wet,"SD")
     #时间
     update = wea_list3[13]
-    update = GetItem(update,"time")
+    update=GetItem(update,"time")
     #空气质量
     aqi = wea_list3[16]
-    aqi = GetItem(aqi,"aqi")
+    aqi=GetItem(aqi,"aqi")
     #PM2.5
     aqi_pm25 = wea_list3[17]
-    aqi_pm25 = GetItem(aqi_pm25,"aqi_pm25")
+    aqi_pm25=GetItem(aqi_pm25,"aqi_pm25")
     #日期
     date = wea_list3[22]
-    date = GetItem(date,"date")
+    date=GetItem(date,"date")
     #-----------------------------------------------------
 
     #dataZS
@@ -152,7 +152,7 @@ def get_weather(City_code):
     #ataZS=re.findall(r',"(.*?)":',wea_list4)
     ##print(dataZS)
     #-----------------------------------------------------
-    umbrella = GetItem(wea_list4,"ys_des_s")
+    umbrella=GetItem(wea_list4,"ys_des_s")
 
     #和风天气
     headers2 = {
@@ -160,12 +160,13 @@ def get_weather(City_code):
     }
     qwea_url = "https://www.qweather.com/weather/"+city_en+"-"+City_code+".html"
     qwea_html = get_weaPage(qwea_url,headers2)
-    wea_comment = re.findall(r'<p class="c-city-weather-current__abstract">(.*?)</p>',qwea_html,flags=16)
+    #print(qwea_html)
+    wea_comment = re.findall(r'<div class="current-abstract">(.*?)</div>',qwea_html,flags=16)
     wea_comment = "".join(wea_comment)
-    aqi_level = re.findall(r'<p class="air-chart-container__aqi-level">(.*?)</p>',qwea_html,flags=16)
-    aqi_level = aqi_level[0].replace("\n","")
-    aqi_level = aqi_level.replace(" ","")
-    #wea_comment = wea_comment.strip('\n')
+    aqi_level = re.findall(r'<p class="city-air-chart__txt text-center">(.*?)</p>',qwea_html,flags=16)
+    aqi_level=aqi_level[0].replace("\n","")
+    aqi_level=aqi_level.replace(" ","")
+    wea_comment = wea_comment.strip('\n')
     wea_comment = wea_comment.replace(" ","").replace("\n","") 
     
     #-----------------------------------------------------
@@ -174,7 +175,7 @@ def get_weather(City_code):
  ===================================
  定位城市:  {1}
  实时天气:  {2}
- 实时温度:  {3}"℃
+ 实时温度:  {3}℃
  温度区间:  {4}℃ - {5}℃
  空气湿度:  {6}
  空气质量:  {7}({8}),PM2.5: {9}
@@ -255,15 +256,16 @@ if __name__ == '__main__':
                 print("\n"+weather_text)
             elif output==1:
                 from tkinter import *
-                root = Tk()
-                root.title("GetWeather")
-                listb  = Text(root)
-                listb.insert(INSERT,weather_text)
-                listb.pack() 
-                root.mainloop()
-        except:
+                windows = Tk()
+                windows.title("GetWeather")
+                text1 = Text(windows)
+                text1.insert(INSERT,weather_text)
+                text1.pack() 
+                windows.mainloop()
+        except Exception as Error:
             print(' [!] 未能找到该地区的天气信息')
             print(" [#] 退出脚本")
+            #raise Error
             sys.exit()
     except Exception as Error:
         raise Error
