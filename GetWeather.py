@@ -88,20 +88,25 @@ def get_weather(City_code):
     #print(html)
     wea_list_all= html.split("var")
     #print(wea_list_all)
-
+    temp_port = "http://d1.weather.com.cn/dingzhi/"+City_code+".html?_="+timestamp
+    temp_html=get_weaPage(temp_port,headers1)
+    #print(temp_html)
+    
     #cityDZ
     #-----------------------------------------------------
     html1= wea_list_all[1]
     wea_list1= html1.split(",")
+    temp_list=temp_html.split(",")
 
+    #print(temp_list)
     #城市英文
     city_en = wea_list1[1]
     city_en = GetItem(city_en,"cityname")
     #温度区间
-    maxtemp = wea_list1[2]
+    maxtemp = temp_list[3]
     maxtemp = GetItem(maxtemp,"temp")
 
-    mintemp = wea_list1[3]
+    mintemp = temp_list[4]
     mintemp = GetItem(mintemp,"tempn")
     #实时天气
     wea_now = wea_list1[4]
@@ -176,7 +181,7 @@ def get_weather(City_code):
  定位城市:  {1}
  实时天气:  {2}
  实时温度:  {3}℃
- 温度区间:  {4}℃ - {5}℃
+ 温度区间:  {4} - {5}
  空气湿度:  {6}
  空气质量:  {7}({8}),PM2.5: {9}
  雨具携带:  {10}
