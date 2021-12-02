@@ -197,7 +197,7 @@ mintemp,wet,aqi,aqi_level,aqi_pm25,umbrella,date,update)
         if wea_alarm != "":
             i=1
             for alarm in wea_alarm:
-                alarm=alarm.replace("\\","")
+                alarm=alarm.replace("\\n","")
                 alarm=alarm.replace("：",":\n ",1)
                 if wea_counter==1:
                     weather_text=weather_text+" \n "+alarm
