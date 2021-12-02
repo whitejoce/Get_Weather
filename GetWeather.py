@@ -24,12 +24,12 @@ def get_CityName():
         print(" [!]正在进行网络自检并重试")
         try:
             res = requests.post(
-            url='http://ip-api.com/json/?lang=zh-CN', data={'ip': 'myip'}, timeout=15)
+                url='http://ip-api.com/json/?lang=zh-CN', data={'ip': 'myip'}, timeout=15)
             result = res.json()['city']
         except:
             print(" [!]无法从相关网站获得请求(请求总时长：25s)，退出脚本")
             sys.exit(1)
-    ##print(res.json())
+    #print(res.json())
     City = re.findall('(.*?)市', result)
     CityName = "".join(City)
     #CityName = CityName[-2:]
@@ -56,7 +56,7 @@ def get_city_code(city):
 
 def get_weaPage(url, headers):
     res = requests.get(url, headers=headers)
-    ##print(res.text)
+    #print(res.text)
     s = res.content
     s.decode('ISO-8859-1')
     bs = bs4.BeautifulSoup(s, "html.parser")
