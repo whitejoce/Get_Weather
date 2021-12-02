@@ -69,22 +69,7 @@
    > 接口:`http://d1.weather.com.cn/weather_index/`[城市ID]`.html?_=`[时间戳(毫秒)]
    >
    >以此数据结构为例：
-         `[cityDZ,alarmDZ,dataSK,dataZS]`
-       
-       
-        cityDZ ={
-                   "weatherinfo":{
-                   "city":"北京",                   #城市英文名
-                   "cityname":"beijing",            #城市名称
-                   "temp":"37",                     #最高温度（摄氏度）
-                   "tempn":"20",                    #最低温度（摄氏度）
-                   "weather":"晴",                  #当前天气
-                   "wd":"西风转西北风",              #风向
-                   "ws":"3-4级;3级",                #风力等级
-                   "weathercode":"d0",
-                   "weathercoden":"n0",
-                   "fctime":"202106190800"}
-                };
+         `[alarmDZ,dataSK,dataZS]`
          
          
          #分两种格式（有无预警）
