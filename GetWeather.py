@@ -92,19 +92,9 @@ def get_weather(City_code):
     temp_port = "http://d1.weather.com.cn/dingzhi/"+City_code+".html?_="+timestamp
     temp_html=get_weaPage(temp_port,headers1)
     
-    
-    #cityDZ
     #-----------------------------------------------------
-    wea_list1=re.findall(r'"weatherinfo":{(.*?)}',wea_list_all[1])
-    wea_list1="".join(wea_list1)
-    wea_list1='{'+wea_list1+'}'
-    wea_list1_json=json.loads(wea_list1)
-    #print(wea_list1_json)
     
-    #城市英文
-    city_en = wea_list1_json['cityname']
-    #温度区间
-
+    #温度区间:maxtemp,mintemp
     temp_data=re.findall(r'"weatherinfo":{(.*?)}',temp_html)
     temp_data="".join(temp_data)
     temp_json='{'+temp_data+'}'
@@ -112,9 +102,6 @@ def get_weather(City_code):
     
     maxtemp=temp_json['temp']
     mintemp=temp_json['tempn']
-    
-    #实时天气
-    wea_now=wea_list1_json['weather']
     
     #alarmDZ
     #-----------------------------------------------------
@@ -135,8 +122,12 @@ def get_weather(City_code):
     wea_list3_json=json.loads(wea_list3)
     #print(wea_list3_json)
     
+    #城市英文
+    city_en = wea_list3_json['nameen']
     #城市
     cityname=wea_list3_json['cityname']
+    #实时天气
+    wea_now=wea_list3_json['weather']
     #当前温度
     temp_now=wea_list3_json['temp']
     #湿度
@@ -182,7 +173,7 @@ def get_weather(City_code):
  定位城市:  {1}
  实时天气:  {2}
  实时温度:  {3}℃
- 温度区间:  {4} ~ {5}
+ 温度区间:  {4}  ~ {5}
  空气湿度:  {6}
  空气质量:  {7}({8}),PM2.5: {9}
  雨具携带:  {10}
@@ -190,22 +181,7 @@ def get_weather(City_code):
  ==================================='''.format\
 (wea_comment,cityname,wea_now,temp_now,maxtemp,\
 mintemp,wet,aqi,aqi_level,aqi_pm25,umbrella,date,update)
-    #-----------------------------------------------------
-    #print("\n " + wea_comment)
 
-    #print(" ===================================")
-    #print(" 定位城市:  "+cityname)
-    #print(" 实时天气:  "+wea_now)
-    #print(" 实时温度:  "+temp_now+"℃")
-    #print(" 温度区间:  "+maxtemp+"℃ - "+mintemp+"℃")
-    #print(" 空气湿度:  "+wet)
-    #0~50优，51~100良，101~150轻度污染，151~200中度污染，201~300重度污染，>300严重污染
-    #print(" 空气质量:  "+aqi+"("+aqi_level+"),PM2.5: "+aqi_pm25)
-    #print(" 雨具携带:  "+umbrella)
-    #print(" [更新时间: "+date+" "+update +"]")
-    #print(" ===================================")
-    #-----------------------------------------------------
-    
     #处理天气预警
     if warning==1:
         wea_alarm_all = "".join(wea_alarm_all)
@@ -271,7 +247,7 @@ if __name__ == '__main__':
         except Exception as Error:
             print(' [!] 未能找到该地区的天气信息')
             print(" [#] 退出脚本")
-            raise Error
+            #raise Error
             sys.exit()
     except Exception as Error:
         raise Error
