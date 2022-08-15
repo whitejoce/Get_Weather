@@ -27,7 +27,7 @@
     > 
     > 脚本中采用的接口不同于网上（网上的的接口天气不更新了），应该是“全网首发”     ; )
     >
-    >定位IP接口: [中国天气网](http://wgeo.weather.com.cn/ip/);
+    >定位接口: [中国天气网](http://wgeo.weather.com.cn/ip/);
     >
     > 天气数据来源网站: [中国天气网](http://www.weather.com.cn/),[和风天气](https://www.qweather.com/)；
 
