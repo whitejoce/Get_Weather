@@ -7,7 +7,7 @@
       
       我的Code代码仓库整合了此脚本,添加了查询城市天气(生活助手):[LifeHelper.py](https://github.com/whitejoce/Code/blob/main/Code/LifeHelper.py)
       
-      关于本项目的[安卓APP Demo](https://github.com/whitejoce/Code/tree/main/Andorid/NewWeather)
+      > 基于本项目的[安卓APP Demo](https://github.com/whitejoce/Code/tree/main/Andorid/NewWeather)
      
       
 * * *
