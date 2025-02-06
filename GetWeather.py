@@ -2,36 +2,39 @@
 # _*_coding: utf-8 _*_
 # Coder:Whitejoce
 
-import sys
-import re
-import time
 import json
-import requests
+import re
+import sys
+import time
+
 import bs4
+import requests
+import argparse
 
-# 输出模式，0为shell输出，1为窗口输出(窗口仅输出天气信息)
-output = 0
+def create_headers(cookie=None, referer=None):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0'
+    }
+    if cookie:
+        headers['Cookie'] = cookie
+    if referer:
+        headers['Referer'] = referer
+    return headers
 
-headers1 = {
-    'Referer': "http://www.weather.com.cn",
-    'Cookie': '',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0'
-}
-
-headers2 = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0',
-}
-
+def dumpResponse(response):
+    with open("response.html", "w", encoding="utf-8") as f:
+        f.write(response)
 
 def get_CityName():
     timestamp = str(int(round(time.time() * 1000)))
+    # https://wgeo.weather.com.cn/ip/?_=1738810663478
     url = 'http://wgeo.weather.com.cn/ip/?_='+timestamp
     try:
-        res = requests.get(url, headers=headers1)
+        res = requests.get(url, headers=create_headers())
     except:
         print(" [!]正在进行网络自检并重试")
         try:
-            res = requests.get(url, headers=headers1)
+            res = requests.get(url, headers=create_headers('', 'http://www.weather.com.cn'))
         except:
             print(" [!]无法从相关网站获得请求(请求总时长：25s)，退出脚本")
             sys.exit(1)
@@ -51,12 +54,21 @@ def get_CityName():
 
 def get_city_code(city):
     try:
-        r = requests.get('http://toy1.weather.com.cn/search?' + city)
-        data = r.text
-        data = data[2:-2].split(',')
-        json_data = json.loads(data[0])
-        code = json_data['ref'].split('~')[0]
-        return code
+        url = "https://j.i8tq.com/weather2020/search/city.js"
+        raw_content = requests.get(url).text
+        raw_data = json.loads(raw_content[15:])
+        #递归查找"NAMECN"是"[city]"的AREAID
+        def find_city_by_name(name, data):
+            for k, v in data.items():
+                if k == "NAMECN" and v == name:
+                    return data
+                if isinstance(v, dict):
+                    result = find_city_by_name(name, v)
+                    if result:
+                        return result
+            return None
+        city = find_city_by_name(city, raw_data)
+        return city['AREAID']
     except Exception as Error:
         print(' [!] 错误，未能找到该地区信息')
         print(" [#] 退出脚本")
@@ -81,33 +93,25 @@ def CheckInput(InputString):
         return True
     return False
 
-
-'''
-def GetItem(name,list):
-    name = re.findall(r'"'+list+'":"(.*?)"',name)
-    name = "".join(name)
-    return name
-'''
-
-
 def get_weather(City_code):
-
     # timestamp的长度为13
-    #timestamp = ''.join(str(random.choice(range(10))) for i in range(13))
+    # timestamp = ''.join(str(random.choice(range(10))) for i in range(13))
     t = time.time()
     timestamp = str(int(round(t * 1000)))
     port = "http://d1.weather.com.cn/weather_index/"+City_code+".html?_="+timestamp
-    html = get_weaPage(port, headers1)
+    html = get_weaPage(port, create_headers('', 'http://www.weather.com.cn'))
+    dumpResponse(html)
     # print(html)
     wea_list_all = html.split("var")
     # print(wea_list_all)
 
     temp_port = "http://d1.weather.com.cn/dingzhi/"+City_code+".html?_="+timestamp
-    temp_html = get_weaPage(temp_port, headers1)
+    temp_html = get_weaPage(temp_port, create_headers('', 'http://www.weather.com.cn'))
 
     # -----------------------------------------------------
 
     # 温度区间:maxtemp,mintemp
+    # print(temp_html)
     temp_data = re.findall(r'"weatherinfo":{(.*?)}', temp_html)
     temp_json = '{'+temp_data[0]+'}'
     # print(temp_json)
@@ -115,17 +119,6 @@ def get_weather(City_code):
 
     maxtemp = temp_json['temp']
     mintemp = temp_json['tempn']
-
-    # alarmDZ
-    # -----------------------------------------------------
-    wea_list2 = wea_list_all[2]
-    wea_alarm_all = re.findall(r'alarmDZ ={"w":\[(.*?)\]};', wea_list2)
-    warning = 0
-    EmptyList = ['']
-    if wea_alarm_all == EmptyList:
-        pass
-    else:
-        warning = 1
 
     # dataSK
     # -----------------------------------------------------
@@ -163,14 +156,14 @@ def get_weather(City_code):
 
     # 和风天气
     qwea_url = "https://www.qweather.com/weather/"+city_en+"-"+City_code+".html"
-    qwea_html = get_weaPage(qwea_url, headers2)
+    qwea_html = get_weaPage(qwea_url, create_headers())
     # print(qwea_html)
 
     wea_comment = re.findall(
-        r'<div class="current-abstract">(.*?)</div>', qwea_html, flags=16)
+        r'<div class="current-abstract">(.*?)</div>', qwea_html, re.S)
     wea_comment = "".join(wea_comment)
     aqi_level = re.findall(
-        r'<p class="city-air-chart__txt text-center">(.*?)</p>', qwea_html, flags=16)
+        r'<p class="city-air-chart__txt text-center">(.*?)</p>', qwea_html, re.S)
     aqi_level = aqi_level[0].strip()
     wea_comment = wea_comment.strip()
 
@@ -189,43 +182,28 @@ def get_weather(City_code):
  ==================================='''.format(wea_comment, cityname, wea_now, temp_now, maxtemp,
                                                mintemp, wet, aqi, aqi_level, aqi_pm25, umbrella, date, update)
 
-    # 处理天气预警
-    if warning == 1:
-        wea_alarm_all = "".join(wea_alarm_all)
-        wea_alarm = re.findall(r'"w9":"(.*?)"', wea_alarm_all)
-        wea_counter = len(wea_alarm)
-        if wea_counter == 1:
-            weather_text = weather_text+"\n [!]气象部门发布预警,请注意:"
-            #print(" [!]气象部门发布预警,请注意:")
-        else:
-            weather_text = weather_text + \
-                "\n [!]气象部门发布" + str(wea_counter) + "则预警,请注意:"
-            #print(" [!]气象部门发布"+ str(wea_counter) +"则预警,请注意:")
-            #wea_alarm = "".join(wea_alarm)
-        if wea_alarm != "":
-            i = 1
-            for alarm in wea_alarm:
-                alarm = alarm.replace("\\n", "")
-                alarm = alarm.replace("：", ":\n ", 1)
-                if wea_counter == 1:
-                    weather_text = weather_text+" \n "+alarm
-                    #print(" "+alarm)
-                else:
-                    weather_text = weather_text+" \n [" + str(i) + "]"+alarm
-                    #print(" ["+ str(i) +"]"+alarm)
-                    i = i+1
-        else:
-            print(" [!]无法获取气象预警详情")
-            option = input(" [?]显示完整数据结构?[y/n]")
-            if option == "y" or option == "Y":
-                #wea_alarm = wea_alarm.replace("{","")
-                #wea_alarm = wea_alarm.replace("}","")
-                weather_text = weather_text+" \n "+wea_alarm_all
-                print(weather_text)
+    # alarmDZ
+    # -----------------------------------------------------
+    weather_text += "\n".join(weather_alarm(wea_list_all[2]))
+    #print(weather_text)
     return weather_text
 
+def weather_alarm(alarm_list):
+    alarmDZ = alarm_list
+    json_str = re.search(r"alarmDZ\s*=\s*(\{.*\});", alarmDZ, re.DOTALL).group(1)
+    alarmDZ = json.loads(json_str)
+    if alarmDZ["w"] == []:
+        return
+    yield ("\n [!]气象部门发布" + str(len(alarmDZ["w"])) + "则预警,请注意:")
+    for alarm, id in enumerate(alarmDZ["w"]):
+        content = id["w9"].replace("：", ":\n ", 1)
+        yield (" [" + str(alarm + 1) + "]" + content)
+        yield (
+            " \t[=]详情: https://www.weather.com.cn/alarm/newalarmcontent.shtml?file="
+            + id["w11"]
+        )
 
-if __name__ == '__main__':
+def main_weather_process(output=0):
     try:
         address, code = get_CityName()
         if len(address) == 0:
@@ -234,7 +212,7 @@ if __name__ == '__main__':
                 print(" [#] 退出脚本")
                 sys.exit(1)
             else:
-                if CheckInput(address) == 1:
+                if CheckInput(address):
                     print(" [!]检测非地名字符，退出脚本")
                     sys.exit(1)
                 else:
@@ -249,7 +227,7 @@ if __name__ == '__main__':
                 print("\n"+weather_text+"\n")
                 # os.system("pause")
             elif output == 1:
-                from tkinter import *
+                from tkinter import Tk, Text, INSERT
                 windows = Tk()
                 windows.title("GetWeather")
                 text1 = Text(windows)
@@ -259,7 +237,51 @@ if __name__ == '__main__':
         except Exception as Error:
             print(' [!] 未能找到该地区的天气信息')
             print(" [#] 退出脚本")
-            #raise Error
+            raise Error
             sys.exit()
-    except Exception as Error:
-        raise Error
+    except Exception:
+        raise
+
+
+def debug_mode(city):
+    """
+    Debug Mode: 检测指定城市的所有相关 URL 的状态码。
+    """
+    urls = [
+        f"https://j.i8tq.com/weather2020/search/city.js",
+        f"http://d1.weather.com.cn/weather_index/{city}.html",
+        f"http://d1.weather.com.cn/dingzhi/{city}.html"
+    ]
+    results = []  # 用于存储状态码结果
+
+    for url in urls:
+        try:
+            response = requests.get(url, headers=create_headers(), timeout=10)
+            # 打印状态码并存储结果
+            print(f"URL: {url}, Status Code: {response.status_code}")
+            results.append({"url": url, "status_code": response.status_code})
+        except Exception as e:
+            # 捕获异常并记录
+            print(f"Error fetching URL: {url}, Exception: {e}")
+            results.append({"url": url, "error": str(e)})
+
+    # 将结果保存到文件
+    with open("debug_results.json", "w", encoding="utf-8") as f:
+        json.dump(results, f, ensure_ascii=False, indent=4)
+    print("Debug results saved to debug_results.json")
+
+if __name__ == '__main__':
+    
+    # 改动 2：支持命令行参数解析
+    parser = argparse.ArgumentParser(description="Weather Script with Debug Mode")
+    parser.add_argument("--debug", action="store_true", help="启用 Debug 模式，仅检查状态码")
+    parser.add_argument("--city", type=str, default="101280601", help="城市代码 (默认: 广州)")
+    parser.add_argument("--output", type=int, default=0, help="输出模式，0为shell输出，1为窗口输出(窗口仅输出天气信息)")
+    args = parser.parse_args()
+
+    # 改动 3：根据参数选择运行模式
+    if args.debug:
+        debug_mode(args.city)
+    else:
+        output = args.output
+        main_weather_process(output)
