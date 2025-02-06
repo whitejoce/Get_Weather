@@ -189,8 +189,7 @@ def get_weather(City_code):
     return weather_text
 
 def weather_alarm(alarm_list):
-    alarmDZ = alarm_list
-    json_str = re.search(r"alarmDZ\s*=\s*(\{.*\});", alarmDZ, re.DOTALL).group(1)
+    json_str = re.search(r"alarmDZ\s*=\s*(\{.*\});", alarm_list, re.DOTALL).group(1)
     alarmDZ = json.loads(json_str)
     if alarmDZ["w"] == []:
         return
