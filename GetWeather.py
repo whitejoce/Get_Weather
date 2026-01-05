@@ -282,19 +282,32 @@ def get_weather(City_code: str) -> str:
     return weather_text
 
 
-def weather_alarm(alarm_list):
-    json_str = re.search(r"alarmDZ\s*=\s*(\{.*\});", alarm_list, re.DOTALL).group(1)
-    alarmDZ = json.loads(json_str)
-    if alarmDZ["w"] == []:
+def weather_alarm(alarm_list: str):
+    """
+    Parse and format weather alarm information.
+
+    Args:
+        alarm_list: Raw alarm data string containing JavaScript variable
+
+    Yields:
+        str: Formatted alarm strings for display
+    """
+    try:
+        json_str = re.search(r"alarmDZ\s*=\s*(\{.*\});", alarm_list, re.DOTALL).group(1)
+        alarmDZ = json.loads(json_str)
+        if not alarmDZ.get("w"):
+            return
+        yield ("\n [!]气象部门发布" + str(len(alarmDZ["w"])) + "则预警,请注意:")
+        for alarm, id in enumerate(alarmDZ["w"]):
+            content = id["w9"].replace("：", ":\n ", 1)
+            yield (" [" + str(alarm + 1) + "]" + content)
+            yield (
+                " \t[=]详情: https://www.weather.com.cn/alarm/newalarmcontent.shtml?file="
+                + id["w11"]
+            )
+    except (AttributeError, json.JSONDecodeError, KeyError) as e:
+        logger.warning(f"解析天气预警失败: {e}")
         return
-    yield ("\n [!]气象部门发布" + str(len(alarmDZ["w"])) + "则预警,请注意:")
-    for alarm, id in enumerate(alarmDZ["w"]):
-        content = id["w9"].replace("：", ":\n ", 1)
-        yield (" [" + str(alarm + 1) + "]" + content)
-        yield (
-            " \t[=]详情: https://www.weather.com.cn/alarm/newalarmcontent.shtml?file="
-            + id["w11"]
-        )
 
 
 def main_weather_process(output=0):
@@ -329,10 +342,10 @@ def main_weather_process(output=0):
                 text1.pack()
                 windows.mainloop()
         except Exception as Error:
+            logger.error(f"获取天气信息失败: {Error}")
             print(' [!] 未能找到该地区的天气信息')
             print(" [#] 退出脚本")
-            raise Error
-            sys.exit()
+            raise
     except Exception:
         raise
 
