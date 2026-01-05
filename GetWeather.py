@@ -16,7 +16,7 @@ import logging
 import re
 import sys
 import time
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Optional, Tuple
 
 import bs4
 import requests
@@ -37,11 +37,11 @@ logger = logging.getLogger(__name__)
 def create_headers(cookie: Optional[str] = None, referer: Optional[str] = None) -> Dict[str, str]:
     """
     Create HTTP headers for requests.
-    
+
     Args:
         cookie: Optional cookie string to include
         referer: Optional referer URL to include
-        
+
     Returns:
         Dictionary of HTTP headers
     """
@@ -58,16 +58,16 @@ def create_headers(cookie: Optional[str] = None, referer: Optional[str] = None) 
 def get_CityName() -> Tuple[str, str]:
     """
     Automatically detect the user's city based on their IP address.
-    
+
     Returns:
         Tuple of (city_name, city_code). Returns empty strings if detection fails.
-        
+
     Raises:
         SystemExit: If network requests fail after retry
     """
     timestamp = str(int(round(time.time() * 1000)))
     url = f'http://wgeo.weather.com.cn/ip/?_={timestamp}'
-    
+
     try:
         res = requests.get(url, headers=create_headers(), timeout=REQUEST_TIMEOUT)
         res.raise_for_status()
@@ -76,27 +76,27 @@ def get_CityName() -> Tuple[str, str]:
         logger.info("正在进行网络自检并重试")
         try:
             res = requests.get(
-                url, 
+                url,
                 headers=create_headers('', 'http://www.weather.com.cn'),
                 timeout=RETRY_TIMEOUT
             )
             res.raise_for_status()
         except requests.RequestException as retry_error:
             logger.error(f"重试失败: {retry_error}")
-            print(f" [!]无法从相关网站获得请求，退出脚本")
+            print(" [!]无法从相关网站获得请求，退出脚本")
             sys.exit(1)
 
     res_text = res.content.decode('utf-8')
     City = re.findall(r'addr="(.*?)"', res_text)
-    
+
     if not City:
         logger.warning('未自动匹配到地区信息')
         print(' [!] 未自动匹配到你所在地的地区信息')
         return "", ""
-    
+
     CityName = "".join(City).split(',')[-1]
     code = re.findall(r'id="(.*?)"', res_text)
-    
+
     if code:
         return CityName, code[0]
     return CityName, ""
@@ -105,13 +105,13 @@ def get_CityName() -> Tuple[str, str]:
 def get_city_code(city: str) -> str:
     """
     Get the city code for a given city name.
-    
+
     Args:
         city: Name of the city in Chinese
-        
+
     Returns:
         City code (AREAID)
-        
+
     Raises:
         SystemExit: If city cannot be found
     """
@@ -121,7 +121,7 @@ def get_city_code(city: str) -> str:
         response.raise_for_status()
         raw_content = response.text
         raw_data = json.loads(raw_content[15:])
-        
+
         def find_city_by_name(name: str, data: dict) -> Optional[dict]:
             """Recursively search for city by name in nested dictionary."""
             for k, v in data.items():
@@ -132,11 +132,11 @@ def get_city_code(city: str) -> str:
                     if result:
                         return result
             return None
-        
+
         city_data = find_city_by_name(city, raw_data)
         if city_data and 'AREAID' in city_data:
             return city_data['AREAID']
-        
+
         logger.error(f'未能找到城市 "{city}" 的信息')
         print(f' [!] 错误，未能找到该地区信息: {city}')
         print(" [#] 退出脚本")
@@ -148,7 +148,7 @@ def get_city_code(city: str) -> str:
         sys.exit(1)
     except (json.JSONDecodeError, KeyError, IndexError) as e:
         logger.error(f'解析城市数据失败: {e}')
-        print(f' [!] 数据解析错误')
+        print(' [!] 数据解析错误')
         print(" [#] 退出脚本")
         sys.exit(1)
 
@@ -156,14 +156,14 @@ def get_city_code(city: str) -> str:
 def get_weaPage(url: str, headers: Dict[str, str]) -> str:
     """
     Fetch and parse a weather page.
-    
+
     Args:
         url: URL to fetch
         headers: HTTP headers to use
-        
+
     Returns:
         Prettified HTML content
-        
+
     Raises:
         requests.RequestException: If request fails
     """
@@ -178,10 +178,10 @@ def get_weaPage(url: str, headers: Dict[str, str]) -> str:
 def CheckInput(InputString: str) -> bool:
     """
     Check if input string contains invalid characters for a city name.
-    
+
     Args:
         InputString: User input to validate
-        
+
     Returns:
         True if input is invalid (contains digits, spaces, or English letters), False otherwise
     """
@@ -196,20 +196,20 @@ def CheckInput(InputString: str) -> bool:
 def get_weather(City_code: str) -> str:
     """
     Fetch and format weather information for a given city code.
-    
+
     Args:
         City_code: The city code to fetch weather for
-        
+
     Returns:
         Formatted weather information string
-        
+
     Raises:
         requests.RequestException: If any HTTP request fails
         json.JSONDecodeError: If JSON parsing fails
     """
     # Generate timestamp (13 digits, milliseconds)
     timestamp = str(int(round(time.time() * 1000)))
-    
+
     # Fetch main weather data
     port = f"http://d1.weather.com.cn/weather_index/{City_code}.html?_={timestamp}"
     html = get_weaPage(port, create_headers('', 'http://www.weather.com.cn'))
@@ -256,7 +256,7 @@ def get_weather(City_code: str) -> str:
     wea_comment = re.findall(
         r'<div class="current-abstract">(.*?)</div>', qwea_html, re.S)
     wea_comment = "".join(wea_comment).strip()
-    
+
     aqi_level = re.findall(
         r'<p class="city-air-chart__txt text-center">(.*?)</p>', qwea_html, re.S)
     aqi_level = aqi_level[0].strip() if aqi_level else "未知"
@@ -277,10 +277,10 @@ def get_weather(City_code: str) -> str:
                                                mintemp, wet, aqi, aqi_level, aqi_pm25, umbrella, date, update)
 
     # alarmDZ
-    # -----------------------------------------------------
+    # Add weather alarms
     weather_text += "\n".join(weather_alarm(wea_list_all[2]))
-    #print(weather_text)
     return weather_text
+
 
 def weather_alarm(alarm_list):
     json_str = re.search(r"alarmDZ\s*=\s*(\{.*\});", alarm_list, re.DOTALL).group(1)
@@ -295,6 +295,7 @@ def weather_alarm(alarm_list):
             " \t[=]详情: https://www.weather.com.cn/alarm/newalarmcontent.shtml?file="
             + id["w11"]
         )
+
 
 def main_weather_process(output=0):
     try:
@@ -341,7 +342,7 @@ def debug_mode(city):
     Debug Mode: 检测指定城市的所有相关 URL 的状态码。
     """
     urls = [
-        f"https://j.i8tq.com/weather2020/search/city.js",
+        "https://j.i8tq.com/weather2020/search/city.js",
         f"http://d1.weather.com.cn/weather_index/{city}.html",
         f"http://d1.weather.com.cn/dingzhi/{city}.html"
     ]
@@ -363,8 +364,9 @@ def debug_mode(city):
         json.dump(results, f, ensure_ascii=False, indent=4)
     print("Debug results saved to debug_results.json")
 
+
 if __name__ == '__main__':
-    
+
     # 改动 2：支持命令行参数解析
     parser = argparse.ArgumentParser(description="Weather Script with Debug Mode")
     parser.add_argument("--debug", action="store_true", help="启用 Debug 模式，仅检查状态码")
