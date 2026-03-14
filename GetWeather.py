@@ -202,23 +202,30 @@ def weather_alarm(alarm_list):
             + id["w11"]
         )
 
-def main_weather_process(output=0):
+def main_weather_process(output=0, city_name=None):
     try:
-        address, code = get_CityName()
-        if len(address) == 0:
-            address = input(" [?] 请手动输入所在地（例：广州）[输入为空即退出]：")
-            if address == "":
-                print(" [#] 退出脚本")
+        if city_name:
+            if CheckInput(city_name):
+                print(" [!]检测非地名字符，退出脚本")
                 sys.exit(1)
-            else:
-                if CheckInput(address):
-                    print(" [!]检测非地名字符，退出脚本")
+            print(" [+] 使用指定城市：" + city_name)
+            code = get_city_code(city_name)
+        else:
+            address, code = get_CityName()
+            if len(address) == 0:
+                address = input(" [?] 请手动输入所在地（例：广州）[输入为空即退出]：")
+                if address == "":
+                    print(" [#] 退出脚本")
                     sys.exit(1)
                 else:
-                    print(" [+] 使用手动输入定位位置："+address)
-                    code = get_city_code(address)
-        else:
-            print(" [+] 自动定位位置："+address)
+                    if CheckInput(address):
+                        print(" [!]检测非地名字符，退出脚本")
+                        sys.exit(1)
+                    else:
+                        print(" [+] 使用手动输入定位位置："+address)
+                        code = get_city_code(address)
+            else:
+                print(" [+] 自动定位位置："+address)
 
         try:
             weather_text = get_weather(code)
@@ -274,13 +281,21 @@ if __name__ == '__main__':
     # 改动 2：支持命令行参数解析
     parser = argparse.ArgumentParser(description="Weather Script with Debug Mode")
     parser.add_argument("--debug", action="store_true", help="启用 Debug 模式，仅检查状态码")
-    parser.add_argument("--city", type=str, default="101280601", help="城市代码 (默认: 广州)")
+    parser.add_argument("--city", type=str, default=None, help="城市名称 (例：北京)")
     parser.add_argument("--output", type=int, default=0, help="输出模式，0为shell输出，1为窗口输出(窗口仅输出天气信息)")
     args = parser.parse_args()
 
     # 改动 3：根据参数选择运行模式
     if args.debug:
-        debug_mode(args.city)
+        if args.city:
+            try:
+                city_code = get_city_code(args.city)
+            except SystemExit:
+                print(f" [!] Debug 模式：未能找到城市 '{args.city}' 的城市代码，退出")
+                sys.exit(1)
+        else:
+            city_code = "101280601"
+        debug_mode(city_code)
     else:
         output = args.output
-        main_weather_process(output)
+        main_weather_process(output, city_name=args.city)
