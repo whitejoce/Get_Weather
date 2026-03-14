@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+*.pyo
+response.html
+debug_results.json
