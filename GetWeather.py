@@ -30,11 +30,12 @@ def get_CityName():
     # https://wgeo.weather.com.cn/ip/?_=1738810663478
     url = 'http://wgeo.weather.com.cn/ip/?_='+timestamp
     try:
-        res = requests.get(url, headers=create_headers())
+        # Magic Cookie: f_city=%E6%9D%AD%E5%B7%9E%7C621005320%7C
+        res = requests.get(url, headers=create_headers(r'f_city=%E6%9D%AD%E5%B7%9E%7C621005320%7C', 'http://www.weather.com.cn'))
     except:
         print(" [!]正在进行网络自检并重试")
         try:
-            res = requests.get(url, headers=create_headers('', 'http://www.weather.com.cn'))
+            res = requests.get(url, headers=create_headers(r'f_city=%E6%9D%AD%E5%B7%9E%7C621005320%7C', 'http://www.weather.com.cn'))
         except:
             print(" [!]无法从相关网站获得请求(请求总时长：25s)，退出脚本")
             sys.exit(1)
