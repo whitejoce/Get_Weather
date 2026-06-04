@@ -1,0 +1,32 @@
+# Ignore everything by default.
+*
+
+# Root project files.
+!.gitignore
+!LICENSE
+!README.md
+!API.md
+!GetWeather.py
+!requirements.txt
+!requirements-dev.txt
+
+# Python package source.
+!get_weather/
+!get_weather/**/*.py
+
+# Tests.
+!tests/
+!tests/**/*.py
+
+# GitHub metadata.
+!.github/
+!.github/workflows/
+!.github/workflows/*.yml
+!.github/workflows/*.yaml
+
+# skills.
+!skills/
+!skills/**/
+!skills/**/SKILL.md
+!skills/**/scripts/
+!skills/**/scripts/**/*.py
