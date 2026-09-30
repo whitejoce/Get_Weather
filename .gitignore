@@ -15,9 +15,10 @@
 !.env.example
 !.github/
 
-# ---- 文档 (docs/backup 为本地归档, 不放行) ----
+# ---- 文档: 仅放行 docs/API.md, 其余(含 backup/)为本地内容 ----
 !docs/
-docs/backup/
+docs/*
+!docs/API.md
 
 # ---- Skill ----
 !skills/

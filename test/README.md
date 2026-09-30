@@ -40,7 +40,7 @@ python -m pytest test/
 | 7 | 40 天日历预报 | `http://d1.weather.com.cn/calendar_new/{年}/{代码}_{年月}.html?_={ts}` | Referer | `sample/calendar_new_jiaxing.html` | `var fc40 = [...]`：35 天；**近 5 天 `cla:"obs"` 含 `maxobs/minobs` 实测高低温（昨日数据可取）**；`cla:"history"` 为历史均值 `hmax/hmin`；另有 `date/c1/c2(天气码)/max/min(今日预报)/hgl/hol(节假日)/blue/insuit/alins+als(黄历宜忌)` |
 | 8 | 雷达图 | `https://d1.weather.com.cn/radar/JC_RADAR_{雷达站号}_JB_V3.html`（部分站为 `_JB.html`） | - | 未保存（JSONP `readerinfo`，站号表在 `j.i8tq.com/radar/radar2024.js`） | 图片序列 |
 
-字段结构详见 [docs/API.md](../docs/API.md) 与 `docs/天气数据结构.txt`。
+字段结构详见 [docs/API.md](../docs/API.md)。
 
 另有轻量实时接口 `http://d1.weather.com.cn/sk_2d/{代码}.html`（200，约350B，独立 dataSK），`weather_index` 已含同款数据，未使用。
 
