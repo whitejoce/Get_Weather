@@ -190,7 +190,7 @@ def find_city_by_name(name, data):
 
 
 def search_city_code(city):
-    """优化 C: 轻量城市搜索接口(约159B), 精确匹配返回城市代码, 失败/未命中返回 None。
+    """轻量城市搜索接口(约159B), 精确匹配返回城市代码, 失败/未命中返回 None。
 
     响应形如: [{"ref":"101210301~zhejiang~嘉兴~Jiaxing~嘉兴~Jiaxing~573~314000~JX~浙江"}, ...]
     ~ 分隔的第3段为城市/区县名, 需过滤模糊命中(如"嘉兴路街道")。
@@ -234,7 +234,7 @@ def _city_code_from_list(city, raw_content):
 def get_city_code(city, raw_content=None):
     """城市名 -> 城市代码。
 
-    优化 C: 优先使用轻量搜索接口(约159B); 失败或未命中时回退完整城市列表 city.js(约345KB)。
+    优先使用轻量搜索接口(约159B); 失败或未命中时回退完整城市列表 city.js(约345KB)。
     raw_content 可传入本地保存的城市列表文本, 跳过网络(离线测试用)。
     """
     if raw_content is not None:
@@ -263,8 +263,8 @@ def CheckInput(InputString):
         return True
     return False
 
-# ---------------- 摘要本地合成(优化B: 替代和风页面摘要) ----------------
-# 句式规律来自 30 城采样分析, 详见 test/README.md「和风摘要句式」。
+# ---------------- 摘要本地合成 ----------------
+# 句式规律详见 test/README.md「和风摘要句式」。
 
 WEATHER_TEXT_BY_CODE = {
     "00": "晴", "01": "多云", "02": "阴", "03": "阵雨", "04": "雷阵雨",
@@ -316,7 +316,7 @@ def aqi_level_text(aqi_value):
 
 
 def air_phrase(aqi_value):
-    """AQI 数值 -> 摘要用空气评价(30 城采样: 优->不错, 良->一般)。"""
+    """AQI 数值 -> 摘要用空气评价(优->不错, 良->一般)。"""
     value = parse_first_number(aqi_value)
     if value is None:
         return ""
@@ -721,7 +721,7 @@ def get_weather_data(city_code: str, today: str = None) -> dict:
     timestamp = str(int(round(time.time() * 1000)))
     base_headers = create_headers('', 'http://www.weather.com.cn')
 
-    # 优化 A: 温度区间直接取 fc[0](今天); 优化 B: 摘要本地合成, 不再请求和风页面
+    # 温度区间取 fc[0](今天, fc=最高/fd=最低); 摘要本地合成; 昨日实测取自 calendar_new
     index_html = fetch_text(
         f"http://d1.weather.com.cn/weather_index/{city_code}.html?_={timestamp}",
         base_headers,
@@ -807,14 +807,14 @@ def build_alarm_messages(alarm_data: Optional[dict]) -> List[str]:
 def main_weather_process(output=0, city_name="", city_code="", as_json=False, as_raw=False):
     try:
         if city_name:
-            # 修复: --city-name 生效，校验后直接查城市代码，不再走自动定位
+            # 指定城市名: 校验后直接查城市代码, 跳过自动定位
             if CheckInput(city_name):
                 _note(" [!]检测非地名字符，退出脚本")
                 sys.exit(1)
             _note(" [+] 使用指定城市：" + city_name)
             code = get_city_code(city_name)
         elif city_code:
-            # 修复: --city-code 生效，直接使用城市代码查询
+            # 指定城市代码: 直接使用, 跳过定位与查码
             _note(" [+] 使用指定城市代码：" + city_code)
             code = city_code
         else:
@@ -934,8 +934,6 @@ def debug_mode(city):
     print("Debug results saved to debug_results.json")
 
 if __name__ == '__main__':
-    
-    # 改动 2：支持命令行参数解析
     parser = argparse.ArgumentParser(description="Weather Script with Debug Mode")
     parser.add_argument("--debug", action="store_true", help="启用 Debug 模式，仅检查状态码")
     parser.add_argument("--city-code", type=str, default=None, help="城市代码 (例: 101010100)；提供时跳过定位直接查询，与 --city-name 同时给出时后者优先")
@@ -945,7 +943,6 @@ if __name__ == '__main__':
     parser.add_argument("--raw", action="store_true", help="输出原始接口 JSON(dataSK/dataZS/alarmDZ/fc/fc40)")
     args = parser.parse_args()
 
-    # 改动 3：根据参数选择运行模式
     if args.debug:
         debug_mode(args.city_code or "101280601")
     else:

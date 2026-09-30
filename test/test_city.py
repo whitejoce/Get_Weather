@@ -58,7 +58,7 @@ def test_find_city_by_name_direct(city_js):
     assert GetWeather.find_city_by_name("不存在的城市", data) is None
 
 
-# ---------- 优化 C: 轻量城市搜索(toy1) ----------
+# ---------- 轻量城市搜索(toy1) ----------
 
 
 def test_search_city_code_exact_match(monkeypatch):

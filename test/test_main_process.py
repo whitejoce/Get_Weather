@@ -1,8 +1,4 @@
-"""main_weather_process 参数路由回归测试。
-
-对应已修复的 bug: --city-name / --city-code 曾被忽略, 永远走 IP 自动定位。
-全部离线: 网络函数均被替换, 只验证路由逻辑与输出。
-"""
+"""main_weather_process 参数路由测试(--city-name/--city-code/--json)。全部离线: 网络函数均被替换, 只验证路由逻辑与输出。"""
 
 import pytest
 

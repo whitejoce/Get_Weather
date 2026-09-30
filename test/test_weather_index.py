@@ -57,11 +57,11 @@ def test_weather_index_fc_five_days():
     assert fc[0]["fc"] and fc[0]["fd"]  # 最高/最低温
 
 
-# ---------- 接口 4: dingzhi (已废弃, 优化A) ----------
+# ---------- 接口 4: dingzhi (参考对照) ----------
 
 
 def test_fc0_today_matches_dingzhi_reference():
-    """对照: fc[0] 与已废弃的 dingzhi 接口数据一致, 因此可省去该请求。"""
+    """对照: fc[0] 与 dingzhi 接口数据等价, 故日常查询不请求 dingzhi。"""
     fc0 = GetWeather.extract_json_block(load("weather_index_jiaxing.html"), "fc")["f"][0]
     ref = GetWeather.extract_json_block(
         load("dingzhi_jiaxing.html"), f"cityDZ{JIAXING}"
@@ -96,11 +96,11 @@ def test_wgeo_ip_response_shape():
     assert city_id[0].isdigit()
 
 
-# ---------- 优化B回归: get_weather 离线全流程 ----------
+# ---------- get_weather 离线全流程 ----------
 
 
 def test_get_weather_offline_local_summary(monkeypatch):
-    """优化B回归: 2 个请求(weather_index+calendar_new), 摘要/AQI等级本地合成, 不再请求和风。"""
+    """get_weather 共 2 个请求(weather_index+calendar_new), 摘要与 AQI 等级本地合成。"""
     idx = load("weather_index_jiaxing.html")
     cal = load("calendar_new_jiaxing.html")
     requested = []

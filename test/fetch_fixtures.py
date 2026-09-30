@@ -55,13 +55,13 @@ def sample_urls():
          create_headers("", WEATHER_REFERER)),
         ("dingzhi_jiaxing.html",
          f"http://d1.weather.com.cn/dingzhi/{JIAXING}.html?_={ts}",
-         create_headers("", WEATHER_REFERER)),  # 已废弃(优化A): 保留作 fc[0] 等价性对照
+         create_headers("", WEATHER_REFERER)),  # 备用参考: 与 fc[0] 数据等价
         ("calendar_new_jiaxing.html",
          f"http://d1.weather.com.cn/calendar_new/{ym[:4]}/{JIAXING}_{ym}.html?_={ts}",
          create_headers("", WEATHER_REFERER)),  # 40天日历预报: fc40 数组(黄历/降水概率/温度)
         ("qweather_jiaxing.html",
          f"https://www.qweather.com/weather/jiaxing-{JIAXING}.html",
-         create_headers()),  # 已废弃(优化B): 摘要已本地合成, 保留样本作句式对照
+         create_headers()),  # 备用参考: 摘要句式对照
     ]
 
 
