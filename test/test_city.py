@@ -46,7 +46,7 @@ def test_get_city_code_unknown_city_exits(city_js, capsys):
     with pytest.raises(SystemExit):
         GetWeather.get_city_code("不存在的城市", raw_content=city_js)
 
-    assert "未能找到该地区信息" in capsys.readouterr().out
+    assert "未能找到该地区信息" in capsys.readouterr().err
 
 
 def test_find_city_by_name_direct(city_js):

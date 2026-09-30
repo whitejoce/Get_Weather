@@ -71,16 +71,6 @@ def test_fc0_today_matches_dingzhi_reference():
     assert f"{fc0['fd']}℃" == ref["tempn"]
 
 
-# ---------- 接口 5: qweather (摘要 + AQI 等级) ----------
-
-
-def test_qweather_summary_and_aqi_level():
-    summary, aqi_level = GetWeather.parse_qweather_summary(load("qweather_jiaxing.html"))
-
-    assert summary  # 非空摘要, 如 "今天白天有小雨..."
-    assert aqi_level  # 如 "优"
-
-
 # ---------- 接口 1: wgeo (IP 自动定位) ----------
 
 

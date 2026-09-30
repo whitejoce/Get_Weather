@@ -51,6 +51,7 @@ def test_get_weather_data_clean_structure(serve_fixtures):
     data = serve_fixtures.get_weather_data("101210301", today="20260929")
     clean = data["clean"]
 
+    assert clean["数据源"] == "中国天气网(网页抓取)"
     assert clean["城市"] == {"名称": "嘉兴", "英文": "jiaxing", "代码": "101210301"}
     assert clean["实况"]["天气"] == "阴"
     assert clean["实况"]["空气质量"] == {"AQI": "26", "等级": "优", "PM2.5": "26"}

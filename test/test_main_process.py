@@ -54,9 +54,9 @@ def test_city_name_skips_geolocation(spies, capsys):
     assert spies["city_name"] == ["嘉兴"]
     assert spies["geo"] == []  # 修复前: 总是调用自动定位, --city-name 无效
     assert spies["city_code"] == ["999000999"]
-    out = capsys.readouterr().out
-    assert "使用指定城市：嘉兴" in out
-    assert "多云" in out  # 输出了天气报告
+    captured = capsys.readouterr()  # 进度走 stderr(_note), 报告本体在 stdout
+    assert "使用指定城市：嘉兴" in captured.err
+    assert "多云" in captured.out  # 输出了天气报告
 
 
 def test_city_code_used_directly(spies, capsys):
@@ -65,7 +65,7 @@ def test_city_code_used_directly(spies, capsys):
     assert spies["city_name"] == []  # 不按城市名查代码
     assert spies["geo"] == []
     assert spies["city_code"] == ["101210301"]
-    assert "使用指定城市代码：101210301" in capsys.readouterr().out
+    assert "使用指定城市代码：101210301" in capsys.readouterr().err
 
 
 def test_city_name_takes_precedence_over_city_code(spies):
@@ -82,7 +82,7 @@ def test_invalid_city_name_exits(spies, capsys):
 
     assert spies["geo"] == []
     assert spies["city_code"] == []
-    assert "非地名字符" in capsys.readouterr().out
+    assert "非地名字符" in capsys.readouterr().err
 
 
 def test_fallback_to_geolocation_when_no_args(spies):

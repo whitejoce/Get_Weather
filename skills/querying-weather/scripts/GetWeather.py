@@ -12,7 +12,6 @@ from typing import Dict, List, Optional
 
 import argparse
 
-import bs4
 import httpx
 import os
 from pathlib import Path
@@ -39,6 +38,85 @@ def parse_first_number(text):
         return float(match.group(0))
     except ValueError:
         return None
+
+
+def get_temp_style(temp_text: str) -> str | None:
+    value = parse_first_number(temp_text)
+    if value is None:
+        return None
+    if value <= 0:
+        return "cold"
+    if value <= 10:
+        return "cool"
+    if value <= 20:
+        return "mild"
+    if value <= 28:
+        return "warm"
+    if value <= 35:
+        return "hot"
+    return "very_hot"
+
+
+def get_aqi_style(aqi_text: str) -> str | None:
+    value = parse_first_number(aqi_text)
+    if value is None:
+        return None
+    if value <= 50:
+        return "excellent"
+    if value <= 100:
+        return "good"
+    if value <= 150:
+        return "light_pollution"
+    if value <= 200:
+        return "moderate_pollution"
+    if value <= 300:
+        return "heavy_pollution"
+    return "severe_pollution"
+
+
+def style_text(text: str, style_key: str | None, color_mode: str) -> str:
+    if not style_key or color_mode == "none":
+        return text
+
+    ansi_map = {
+        "cold": "94",
+        "cool": "96",
+        "mild": "92",
+        "warm": "93",
+        "hot": "33",
+        "very_hot": "91",
+        "excellent": "92",
+        "good": "93",
+        "light_pollution": "33",
+        "moderate_pollution": "91",
+        "heavy_pollution": "95",
+        "severe_pollution": "31",
+    }
+
+    rich_map = {
+        "cold": "bright_blue",
+        "cool": "cyan",
+        "mild": "green",
+        "warm": "yellow",
+        "hot": "orange3",
+        "very_hot": "bright_red",
+        "excellent": "green",
+        "good": "yellow",
+        "light_pollution": "orange3",
+        "moderate_pollution": "red",
+        "heavy_pollution": "magenta",
+        "severe_pollution": "dark_red",
+    }
+
+    if color_mode == "ansi":
+        code = ansi_map.get(style_key)
+        return f"\033[{code}m{text}\033[0m" if code else text
+
+    if color_mode == "rich":
+        color = rich_map.get(style_key)
+        return f"[{color}]{text}[/{color}]" if color else text
+
+    return text
 
 
 @dataclass
@@ -69,19 +147,36 @@ class WeatherReport:
     umbrella: str
     alarms: List[str]
 
-    def as_text(self) -> str:
+    def as_text(self, color_mode: str = "none") -> str:
+        temp_now = style_text(
+            self.snapshot.temp_now, get_temp_style(self.snapshot.temp_now), color_mode
+        )
+        max_temp = style_text(
+            self.snapshot.max_temp, get_temp_style(self.snapshot.max_temp), color_mode
+        )
+        min_temp = style_text(
+            self.snapshot.min_temp, get_temp_style(self.snapshot.min_temp), color_mode
+        )
+        aqi_style = get_aqi_style(self.air_quality.aqi)
+        aqi_level = style_text(self.air_quality.level, aqi_style, color_mode)
+        aqi_value = style_text(self.air_quality.aqi, aqi_style, color_mode)
+        pm25_value = style_text(self.air_quality.pm25, aqi_style, color_mode)
+
         lines = [
-            f" {self.summary}",
-            "\n ===================================",
-            f" 定位城市:  {self.snapshot.city_cn}",
-            f" 实时天气:  {self.snapshot.description}",
-            f" 体感温度:  {self.snapshot.temp_now}℃",
-            f" 温度区间:  {self.snapshot.max_temp} ~ {self.snapshot.min_temp}",
-            f" 空气湿度:  {self.snapshot.humidity}",
-            f" 空气质量:  {self.air_quality.aqi}({self.air_quality.level}),PM2.5: {self.air_quality.pm25}",
-            f" 雨具携带:  {self.umbrella}",
-            f" [更新时间: {self.snapshot.date} {self.snapshot.update_time}]",
-            " ===================================",
+            f"● 根据天气查询结果，今天{self.snapshot.city_cn}的天气情况如下：",
+            "",
+            " 今日天气概况：",
+            f" - 🌤️ 天气：{self.snapshot.description}",
+            f" - 🌡️ 当前温度：{temp_now}℃",
+            f" - 📊 温度范围：{max_temp} ~ {min_temp}",
+            f" - 💧 湿度：{self.snapshot.humidity}",
+            f" - 🌬️ 空气质量：{aqi_level}（AQI: {aqi_value}，PM2.5: {pm25_value}）",
+            "",
+            " 生活建议：",
+            f" - ☂️ 雨具携带：{self.umbrella}",
+            f" - 📝 天气概况：{self.summary}",
+            "",
+            f" 更新时间：{self.snapshot.date} {self.snapshot.update_time}",
         ]
         if self.alarms:
             lines.extend(self.alarms)
@@ -107,10 +202,6 @@ def http_get(url, **kwargs):
 def _note(message):
     """进度/诊断信息走 stderr, 保证 stdout 纯净(便于 --json 模式被 AI 直接解析)。"""
     print(message, file=sys.stderr)
-
-def dumpResponse(response):
-    with open("response.html", "w", encoding="utf-8") as f:
-        f.write(response)
 
 
 def fetch_text(url: str, headers: Optional[Dict[str, str]] = None, *, timeout: int = DEFAULT_TIMEOUT) -> str:
@@ -140,14 +231,6 @@ def extract_json_block(text: str, var_name: str) -> Optional[dict]:
                 return json.loads(text[start:index + 1])
     return None
 
-
-def parse_qweather_summary(html: str) -> tuple[str, str]:
-    soup = bs4.BeautifulSoup(html, "html.parser")
-    summary_node = soup.select_one("div.current-abstract")
-    summary = summary_node.get_text(strip=True) if summary_node else ""
-    aqi_node = soup.select_one("p.city-air-chart__txt.text-center")
-    aqi_level = aqi_node.get_text(strip=True) if aqi_node else ""
-    return summary, aqi_level
 
 def get_CityName(city_code="",city_name=""):
     timestamp = str(int(round(time.time() * 1000)))
@@ -227,7 +310,6 @@ def _city_code_from_list(city, raw_content):
     except Exception as Error:
         _note(' [!] 错误，未能找到该地区信息')
         _note(" [#] 退出脚本")
-        #raise Error
         sys.exit()
 
 
@@ -476,6 +558,7 @@ def build_clean_data(index_html, data_sk, data_zs, alarm_dz, fc_days, yesterday_
 
     fc0 = (fc_days or [{}])[0]
     return {
+        "数据源": "中国天气网(网页抓取)",
         "城市": {
             "名称": data_sk.get("cityname", ""),
             "英文": data_sk.get("nameen", ""),
@@ -804,7 +887,8 @@ def build_alarm_messages(alarm_data: Optional[dict]) -> List[str]:
             )
     return messages
 
-def main_weather_process(output=0, city_name="", city_code="", as_json=False, as_raw=False):
+def main_weather_process(output=0, city_name="", city_code="", color_mode="ansi", as_json=False, as_raw=False):
+    address = ""
     try:
         if city_name:
             # 指定城市名: 校验后直接查城市代码, 跳过自动定位
@@ -838,10 +922,10 @@ def main_weather_process(output=0, city_name="", city_code="", as_json=False, as
             # stdout 只输出 JSON(供 AI 直接解析); 进度信息已走 stderr
             # 优先官方 API(需 key); 失败或无 key 回退网页方案
             api_key = _load_api_key()
-            api_city = city_name
-            if not api_city and not city_code:
-                address, _ = get_CityName()
-                api_city = address
+            if city_code and api_key:
+                _note(" [i] --city-code 为天气网城市代码, 官方 API 需 Location Key, 本次走网页数据源")
+            # 复用路由阶段结果(city_name 或自动定位 address), 避免二次定位请求
+            api_city = city_name or address
             data = get_weather_data_api(api_city, api_key) if (api_key and api_city) else None
             if data is not None:
                 _note(" [+] 数据源: 华风爱科官方 API(openapi.weathercn.com)")
@@ -853,11 +937,20 @@ def main_weather_process(output=0, city_name="", city_code="", as_json=False, as
 
         try:
             weather_report = get_weather(code)
-            report_text = weather_report.as_text()
             if output == 0:
-                print("\n" + report_text + "\n")
-                # os.system("pause")
+                report_text = weather_report.as_text(color_mode=color_mode)
+                if color_mode == "rich":
+                    try:
+                        from rich import print as rich_print
+
+                        rich_print("\n" + report_text + "\n")
+                    except ImportError:
+                        _note(" [!] 未安装 rich，已回退到 ANSI 配色输出")
+                        print("\n" + weather_report.as_text(color_mode="ansi") + "\n")
+                else:
+                    print("\n" + report_text + "\n")
             elif output == 1:
+                report_text = weather_report.as_text(color_mode="none")
                 import tkinter as tk
                 from tkinter import scrolledtext
 
@@ -898,7 +991,6 @@ def main_weather_process(output=0, city_name="", city_code="", as_json=False, as
             _note(' [!] 未能找到该地区的天气信息')
             _note(" [#] 退出脚本")
             raise Error
-            sys.exit()
     except Exception:
         raise
 
@@ -939,6 +1031,7 @@ if __name__ == '__main__':
     parser.add_argument("--city-code", type=str, default=None, help="城市代码 (例: 101010100)；提供时跳过定位直接查询，与 --city-name 同时给出时后者优先")
     parser.add_argument("--city-name", type=str, help="城市名称 (例: 北京)，提供时跳过自动定位")
     parser.add_argument("--output", type=int, default=0, help="输出模式，0为shell输出，1为窗口输出(窗口仅输出天气信息)")
+    parser.add_argument("--color-mode", type=str, choices=["none", "ansi", "rich"], default="ansi", help="文本输出配色: none/ansi/rich")
     parser.add_argument("--json", action="store_true", help="输出清洗后的结构化 JSON(供 AI 解读, stdout 纯 JSON)")
     parser.add_argument("--raw", action="store_true", help="输出原始接口 JSON(dataSK/dataZS/alarmDZ/fc/fc40)")
     args = parser.parse_args()
@@ -949,4 +1042,4 @@ if __name__ == '__main__':
         output = args.output
         city_name = args.city_name
         city_code = args.city_code
-        main_weather_process(output, city_name, city_code, args.json, args.raw)
+        main_weather_process(output, city_name, city_code, args.color_mode, args.json, args.raw)
