@@ -1,119 +1,80 @@
 # API Documentation
 
-本文档说明本仓库对外可用的 Python 接口、CLI 参数，以及当前依赖的上游数据结构。
+- [API Documentation](#api-documentation)
+  - [数据结构](#数据结构)
+    - [dataSK](#datask)
+    - [alarmDZ](#alarmdz)
+    - [dataZS](#datazs)
 
-## Python 接口
+## 数据结构 : `[dataSK, alarmDZ, dataZS]`
 
-推荐使用 `get_weather.WeatherClient`：
-
-```python
-from get_weather import WeatherClient
-
-client = WeatherClient(timeout=10, retries=1)
-city_code = client.get_city_code("北京")
-weather_text = client.get_weather(city_code)
-print(weather_text)
-```
-
-兼容旧脚本的函数仍可从 `GetWeather.py` 或 `get_weather` 导入：
-
-- `get_CityName() -> tuple[str, str]`：自动定位城市，返回城市名和城市代码。
-- `get_city_code(city: str) -> str`：通过中文城市名查询城市代码。
-- `get_weather(city_code: str, dump_response_path: str | None = None) -> str`：通过城市代码查询并格式化天气文本。
-- `weather_alarm(source: str) -> Iterable[str]`：解析预警数据并返回输出行。
-- `debug_mode(city_code: str, output_file="debug_results.json") -> list[dict]`：检查上游 URL 状态码。
-
-库函数不再直接调用 `sys.exit()`；失败时会抛出 `WeatherError` 及其子类：
-
-- `InvalidCityNameError`
-- `CityNotFoundError`
-- `NetworkError`
-- `ParseError`
-
-## CLI 参数
-
-```bash
-python GetWeather.py [--city 城市名] [--output 0|1] [--debug] [--dump-response]
-```
-
-- `--city`：指定中文城市名，例如 `北京`。不指定时尝试自动定位。
-- `--output`：`0` 为终端输出，`1` 为 Tkinter 窗口输出。
-- `--debug`：只检查上游 URL 状态码。
-- `--dump-response`：保存 `weather_index` 原始响应到 `response.html`，默认不保存。
-- `--debug-output`：Debug 模式结果文件，默认 `debug_results.json`；传入空字符串可禁用写入。
-
-## 上游接口
-
-当前脚本依赖以下上游页面或接口：
-
-- 城市定位：`http://wgeo.weather.com.cn/ip/?_={timestamp}`
-- 城市列表：`https://j.i8tq.com/weather2020/search/city.js`
-- 天气索引：`http://d1.weather.com.cn/weather_index/{city_code}.html?_={timestamp}`
-- 温度区间：`http://d1.weather.com.cn/dingzhi/{city_code}.html?_={timestamp}`
-- 天气摘要：`https://www.qweather.com/weather/{city_en}-{city_code}.html`
-
-这些都不是本项目维护的稳定 API。上游结构变化时，本项目解析逻辑可能需要同步更新。
-
-## `dataSK`
-
-`weather_index` 页面中的实时天气数据，示例：
+### dataSK
 
 ```json
 {
-  "nameen": "beijing",
-  "cityname": "北京",
-  "city": "101010100",
-  "temp": "32",
-  "WD": "北风",
-  "WS": "1 级",
-  "SD": "13%",
-  "time": "09:40",
-  "aqi": "35",
-  "aqi_pm25": "35",
-  "weather": "晴",
-  "limitnumber": "不限行",
-  "date": "06月19日(星期六)"
+    "nameen": "beijing",                // 城市英文名
+    "cityname": "北京",                 // 城市名称
+    "city": "101010100",                // 城市编号
+    "temp": "32",                       // 摄氏度
+    "tempf": "89",                      // 华氏度
+    "WD": "北风",                       // 风向
+    "wde": "N",                         // 风向（字母表示）
+    "WS": "1 级",                       // 风力
+    "wse": "4km/h",                     // 风速
+    "SD": "13%",                        // 湿度
+    "sd": "13%",
+    "qy": "994",                        // 气压
+    "njd": "26km",                      // 能见度
+    "time": "09:40",                    // 数据更新时间
+    "rain": "0",
+    "rain24h": "0",
+    "aqi": "35",                        // 空气质量
+    "aqi_pm25": "35",                   // PM2.5指数
+    "weather": "晴",                    // 天气状况
+    "weathere": "Sunny",                // 天气状况（英语）
+    "weathercode": "d00",
+    "limitnumber": "不限行",             // 城市限行
+    "date": "06月19日(星期六)"           // 日期
 }
 ```
-
-## `alarmDZ`
-
-无预警：
-
+* * *
+### alarmDZ
 ```json
-{"w": []}
-```
-
-有预警：
-
-```json
-{
-  "w": [
-    {
-      "w5": "高温",
-      "w7": "蓝色",
-      "w8": "2021-06-18 15:41",
-      "w9": "市气象台发布高温蓝色预警信号：预计日最高气温将在35℃以上。",
-      "w11": "10101-20210618154146-0701.html",
-      "w13": "北京市发布高温蓝色预警"
-    }
-  ]
+// 无预警
+alarmDZ = {"w":[]}
+// 有预警
+alarmDZ = {
+    "w": [{
+        "w1": "北京市",
+        "w2": "",
+        "w3": "",
+        "w4": "07",
+        "w5": "高温",
+        "w6": "01",
+        "w7": "蓝色",
+        "w8": "2021-06-18 15:41",
+        "w9": "市气象台2021年6月18日15时45分发布高温蓝色预警信号：预计，19日至20日，本市大部分地区日最高气温将在35℃以上，请注意防范。（预警信息来源：国家预警信息发布中心）",
+        "w10": "202106181541545112高温蓝色",
+        "w11": "10101-20210618154146-0701.html",
+        "w12": "2021-06-18 15:44",
+        "w13": "北京市发布高温蓝色预警"
+    }]
 }
 ```
+* * *
 
-## `dataZS`
+### dataZS
 
-生活指数数据，脚本当前主要使用 `ys_des_s` 作为雨具建议：
-
+dataZS结构:
 ```json
 {
-  "zs": {
-    "date": "2021061918",
-    "ys_name": "雨伞指数",
-    "ys_hint": "不带伞",
-    "ys_des_s": "天气较好，不用带雨伞。"
-  },
-  "cn": "北京"
+    "zs":{
+        "data":"时间戳",
+        "**_name":"**指数",
+        "**_hint":"**提示",
+        "**_des_s":"**描述"
+    },
+    "cn":"北京"
 }
 ```
 
@@ -211,7 +172,7 @@ python GetWeather.py [--city 城市名] [--output 0|1] [--debug] [--dump-respons
       "gz_name":"干燥指数",
       "gz_hint":"非常干燥",
       "gz_des_s":"空气干燥，极易引起皮肤水分流失，建议涂抹防晒霜，多喝水保持身体滋润。"
-   }
-  "cn": "北京"
+   },
+   "cn":"北京"
 }
 ```
