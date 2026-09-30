@@ -1,25 +1,49 @@
-# Python
+# ============================================================
+# 白名单模式: 默认忽略一切, 仅显式放行下列内容
+# 新增顶层文件/目录需手动加入白名单, 避免误提交
+# ============================================================
+
+/*
+
+# ---- 仓库根 ----
+!.gitignore
+!README.md
+!LICENSE
+!GetWeather.py
+!requirements.txt
+!requirements-dev.txt
+!.env.example
+!.github/
+
+# ---- 文档 (docs/backup 为本地归档, 不放行) ----
+!docs/
+docs/backup/
+
+# ---- Skill ----
+!skills/
+
+# ---- 测试与样本 ----
+!test/
+test/backup/
+
+# ---- 放行目录内部仍需排除的内容 ----
+
+# Python 运行产物
 __pycache__/
 *.pyc
 *.pyo
 .pytest_cache/
 
-# 密钥(绝不入库)
+# 密钥 (绝不入库)
 .env
-*.env
+**/.env
+
+# IDE / 编辑器 / 系统杂物
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
 
 # 调试产物
 response.html
 debug_results.json
-
-# IDE / 编辑器
-.vscode/
-.idea/
-
-# 本地归档(仅留存本地, 不上传)
-docs/backup/
-test/backup/
-
-# 系统杂物
-Thumbs.db
-.DS_Store
