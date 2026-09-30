@@ -24,7 +24,7 @@ python GetWeather.py --debug                          # 检查上游接口状态
 
 ## AI Skill
 
-`skills/querying-weather/`（同步安装于 `~/.pi/agent/skills/` 等位置）：
+`skills/querying-weather/`（可安装于 `~/.pi/agent/skills/` 等位置）：
 
 ```bash
 python scripts/GetWeather.py --city-name 嘉兴 --json   # 清洗版结构化 JSON（推荐给 AI）
