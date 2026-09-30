@@ -1,34 +1,21 @@
 #!/usr/bin/python
-# _*_coding: utf-8 _*_
 # Coder:Whitejoce
 
+import argparse
 import datetime
 import json
 import re
 import sys
 import time
 from dataclasses import dataclass
-from typing import Dict, List, Optional
-
-import argparse
 
 import bs4
 import httpx
-'''
-TODO:
-1. 输出使用Rich库美化
-2. 支持命令行参数解析
-
-要有很多f-string
-
-3. 选项解析还没完成
-'''
-
 
 DEFAULT_TIMEOUT = 10
 
 
-def parse_first_number(text: str) -> Optional[float]:
+def parse_first_number(text: str) -> float | None:
     match = re.search(r"-?\d+(?:\.\d+)?", str(text))
     if not match:
         return None
@@ -38,7 +25,7 @@ def parse_first_number(text: str) -> Optional[float]:
         return None
 
 
-def get_temp_style(temp_text: str) -> Optional[str]:
+def get_temp_style(temp_text: str) -> str | None:
     value = parse_first_number(temp_text)
     if value is None:
         return None
@@ -55,7 +42,7 @@ def get_temp_style(temp_text: str) -> Optional[str]:
     return "very_hot"
 
 
-def get_aqi_style(aqi_text: str) -> Optional[str]:
+def get_aqi_style(aqi_text: str) -> str | None:
     value = parse_first_number(aqi_text)
     if value is None:
         return None
@@ -72,7 +59,7 @@ def get_aqi_style(aqi_text: str) -> Optional[str]:
     return "severe_pollution"
 
 
-def style_text(text: str, style_key: Optional[str], color_mode: str) -> str:
+def style_text(text: str, style_key: str | None, color_mode: str) -> str:
     if not style_key or color_mode == "none":
         return text
 
@@ -143,12 +130,18 @@ class WeatherReport:
     snapshot: WeatherSnapshot
     air_quality: AirQuality
     umbrella: str
-    alarms: List[str]
+    alarms: list[str]
 
     def as_text(self, color_mode: str = "none") -> str:
-        temp_now = style_text(self.snapshot.temp_now, get_temp_style(self.snapshot.temp_now), color_mode)
-        max_temp = style_text(self.snapshot.max_temp, get_temp_style(self.snapshot.max_temp), color_mode)
-        min_temp = style_text(self.snapshot.min_temp, get_temp_style(self.snapshot.min_temp), color_mode)
+        temp_now = style_text(
+            self.snapshot.temp_now, get_temp_style(self.snapshot.temp_now), color_mode
+        )
+        max_temp = style_text(
+            self.snapshot.max_temp, get_temp_style(self.snapshot.max_temp), color_mode
+        )
+        min_temp = style_text(
+            self.snapshot.min_temp, get_temp_style(self.snapshot.min_temp), color_mode
+        )
         aqi_style = get_aqi_style(self.air_quality.aqi)
         aqi_level = style_text(self.air_quality.level, aqi_style, color_mode)
         aqi_value = style_text(self.air_quality.aqi, aqi_style, color_mode)
@@ -190,12 +183,12 @@ class WeatherReport:
 
 def create_headers(cookie=None, referer=None):
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0'
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0"
     }
     if cookie:
-        headers['Cookie'] = cookie
+        headers["Cookie"] = cookie
     if referer:
-        headers['Referer'] = referer
+        headers["Referer"] = referer
     return headers
 
 
@@ -203,12 +196,15 @@ def http_get(url, **kwargs):
     """统一请求入口: 对齐 requests 默认行为(httpx 默认不跟随重定向)。"""
     return httpx.get(url, follow_redirects=True, **kwargs)
 
+
 def dumpResponse(response):
     with open("response.html", "w", encoding="utf-8") as f:
         f.write(response)
 
 
-def fetch_text(url: str, headers: Optional[Dict[str, str]] = None, *, timeout: int = DEFAULT_TIMEOUT) -> str:
+def fetch_text(
+    url: str, headers: dict[str, str] | None = None, *, timeout: int = DEFAULT_TIMEOUT
+) -> str:
     response = http_get(url, headers=headers or create_headers(), timeout=timeout)
     response.raise_for_status()
     # 上游接口均为 UTF-8; httpx 无 charset 时默认按 UTF-8 解码(errors=replace),
@@ -216,7 +212,7 @@ def fetch_text(url: str, headers: Optional[Dict[str, str]] = None, *, timeout: i
     return response.text
 
 
-def extract_json_block(text: str, var_name: str) -> Optional[dict]:
+def extract_json_block(text: str, var_name: str) -> dict | None:
     assign_pattern = re.compile(rf"{re.escape(var_name)}\s*=\s*", re.MULTILINE)
     match = assign_pattern.search(text)
     if not match:
@@ -227,12 +223,12 @@ def extract_json_block(text: str, var_name: str) -> Optional[dict]:
     depth = 0
     for index in range(start, len(text)):
         char = text[index]
-        if char == '{':
+        if char == "{":
             depth += 1
-        elif char == '}':
+        elif char == "}":
             depth -= 1
             if depth == 0:
-                return json.loads(text[start:index + 1])
+                return json.loads(text[start : index + 1])
     return None
 
 
@@ -244,29 +240,43 @@ def parse_qweather_summary(html: str) -> tuple[str, str]:
     aqi_level = aqi_node.get_text(strip=True) if aqi_node else ""
     return summary, aqi_level
 
-def get_CityName(city_code="",city_name=""):
+
+def get_CityName(city_code="", city_name=""):
     timestamp = str(int(round(time.time() * 1000)))
     # https://wgeo.weather.com.cn/ip/?_=1776061426203
-    url = 'http://wgeo.weather.com.cn/ip/?_='+timestamp
+    url = "http://wgeo.weather.com.cn/ip/?_=" + timestamp
     try:
         # Magic Cookie: f_city=%E6%9D%AD%E5%B7%9E%7C621005320%7C
-        res = http_get(url, headers=create_headers(r'f_city=%E6%9D%AD%E5%B7%9E%7C621005320%7C', 'http://www.weather.com.cn'), timeout=DEFAULT_TIMEOUT)
+        res = http_get(
+            url,
+            headers=create_headers(
+                r"f_city=%E6%9D%AD%E5%B7%9E%7C621005320%7C", "http://www.weather.com.cn"
+            ),
+            timeout=DEFAULT_TIMEOUT,
+        )
     except:
         print(" [!]正在进行网络自检并重试")
         try:
-            res = http_get(url, headers=create_headers(r'f_city=%E6%9D%AD%E5%B7%9E%7C621005320%7C', 'http://www.weather.com.cn'), timeout=DEFAULT_TIMEOUT)
+            res = http_get(
+                url,
+                headers=create_headers(
+                    r"f_city=%E6%9D%AD%E5%B7%9E%7C621005320%7C",
+                    "http://www.weather.com.cn",
+                ),
+                timeout=DEFAULT_TIMEOUT,
+            )
         except:
             print(" [!]无法从相关网站获得请求(请求总时长：25s)，退出脚本")
             sys.exit(1)
 
-    res = res.content.decode('utf-8')
+    res = res.content.decode("utf-8")
     City = re.findall('addr="(.*?)"', res)
     # print(res)
     if City == []:
-        print(' [!] 未自动匹配到你所在地的地区信息')
+        print(" [!] 未自动匹配到你所在地的地区信息")
     else:
-        CityName = "".join(City).split(',')[-1]
-        #ip=re.findall('ip:"(.*?)"', res)
+        CityName = "".join(City).split(",")[-1]
+        # ip=re.findall('ip:"(.*?)"', res)
         code = re.findall('id="(.*?)"', res)
         return CityName, code[0]
     return "", ""
@@ -294,7 +304,7 @@ def search_city_code(city):
         res = http_get(
             "http://toy1.weather.com.cn/search",
             params={"cityname": city},
-            headers=create_headers('', 'http://www.weather.com.cn'),
+            headers=create_headers("", "http://www.weather.com.cn"),
             timeout=DEFAULT_TIMEOUT,
         )
         res.raise_for_status()
@@ -318,11 +328,11 @@ def _city_code_from_list(city, raw_content):
         city_data = find_city_by_name(city, raw_data)
         if not city_data:
             raise ValueError(f"未找到城市: {city}")
-        return city_data['AREAID']
-    except Exception as Error:
-        print(' [!] 错误，未能找到该地区信息')
+        return city_data["AREAID"]
+    except Exception:
+        print(" [!] 错误，未能找到该地区信息")
         print(" [#] 退出脚本")
-        #raise Error
+        # raise Error
         sys.exit()
 
 
@@ -343,8 +353,8 @@ def get_city_code(city, raw_content=None):
         raw_content = http_get(
             "https://j.i8tq.com/weather2020/search/city.js", timeout=15
         ).text
-    except Exception as Error:
-        print(' [!] 错误，未能找到该地区信息')
+    except Exception:
+        print(" [!] 错误，未能找到该地区信息")
         print(" [#] 退出脚本")
         sys.exit()
     return _city_code_from_list(city, raw_content)
@@ -353,23 +363,49 @@ def get_city_code(city, raw_content=None):
 def CheckInput(InputString):
     if any(char.isdigit() for char in InputString) or InputString.isspace():
         return True
-    match = re.search('[a-zA-Z]+$', InputString)
+    match = re.search("[a-zA-Z]+$", InputString)
     if match:
         return True
     return False
+
 
 # ---------------- 摘要本地合成(优化B: 替代和风页面摘要) ----------------
 # 句式规律来自 30 城采样分析, 详见 test/README.md「和风摘要句式」。
 
 WEATHER_TEXT_BY_CODE = {
-    "00": "晴", "01": "多云", "02": "阴", "03": "阵雨", "04": "雷阵雨",
-    "05": "雷阵雨伴冰雹", "06": "雨夹雪", "07": "小雨", "08": "中雨",
-    "09": "大雨", "10": "暴雨", "11": "大暴雨", "12": "阵雪", "13": "小雪",
-    "14": "中雪", "15": "大雪", "16": "暴雪", "17": "雾", "18": "冻雨",
-    "19": "沙尘暴", "20": "小到中雨", "21": "中到大雨", "22": "大到暴雨",
-    "23": "暴雨到大暴雨", "24": "大暴雨到特大暴雨", "25": "小到中雪",
-    "26": "中到大雪", "27": "大到暴雪", "28": "浮尘", "29": "扬沙",
-    "30": "强沙尘暴", "31": "霾", "53": "无",
+    "00": "晴",
+    "01": "多云",
+    "02": "阴",
+    "03": "阵雨",
+    "04": "雷阵雨",
+    "05": "雷阵雨伴冰雹",
+    "06": "雨夹雪",
+    "07": "小雨",
+    "08": "中雨",
+    "09": "大雨",
+    "10": "暴雨",
+    "11": "大暴雨",
+    "12": "阵雪",
+    "13": "小雪",
+    "14": "中雪",
+    "15": "大雪",
+    "16": "暴雪",
+    "17": "雾",
+    "18": "冻雨",
+    "19": "沙尘暴",
+    "20": "小到中雨",
+    "21": "中到大雨",
+    "22": "大到暴雨",
+    "23": "暴雨到大暴雨",
+    "24": "大暴雨到特大暴雨",
+    "25": "小到中雪",
+    "26": "中到大雪",
+    "27": "大到暴雪",
+    "28": "浮尘",
+    "29": "扬沙",
+    "30": "强沙尘暴",
+    "31": "霾",
+    "53": "无",
 }
 
 
@@ -453,7 +489,7 @@ def extract_fc40(text):
             depth -= 1
             if depth == 0:
                 try:
-                    return json.loads(text[start:i + 1])
+                    return json.loads(text[start : i + 1])
                 except ValueError:
                     return None
     return None
@@ -465,7 +501,7 @@ def fetch_calendar_fc40(city_code, ym=None):
         ym = time.strftime("%Y%m")
     url = f"http://d1.weather.com.cn/calendar_new/{ym[:4]}/{city_code}_{ym}.html"
     try:
-        text = fetch_text(url, create_headers('', 'http://www.weather.com.cn'))
+        text = fetch_text(url, create_headers("", "http://www.weather.com.cn"))
     except Exception:
         return None
     return extract_fc40(text)
@@ -481,7 +517,11 @@ def find_yesterday_obs(fc40, today=None):
         day = datetime.date.today()
     yesterday = (day - datetime.timedelta(days=1)).strftime("%Y%m%d")
     for entry in fc40:
-        if entry.get("date") == yesterday and entry.get("maxobs") and entry.get("minobs"):
+        if (
+            entry.get("date") == yesterday
+            and entry.get("maxobs")
+            and entry.get("minobs")
+        ):
             return entry
     return None
 
@@ -533,7 +573,7 @@ def build_summary(data_sk, index_html, yesterday_obs):
 
 def get_weather(city_code: str) -> WeatherReport:
     timestamp = str(int(round(time.time() * 1000)))
-    base_headers = create_headers('', 'http://www.weather.com.cn')
+    base_headers = create_headers("", "http://www.weather.com.cn")
 
     # 优化 A: 温度区间直接取 weather_index 内 fc[0](今天, fc=最高/fd=最低),
     # 数据与已移除的 dingzhi 请求一致(跨城市验证), 少一次请求
@@ -563,7 +603,7 @@ def get_weather(city_code: str) -> WeatherReport:
         date=data_sk.get("date", ""),
         update_time=data_sk.get("time", ""),
         max_temp=f"{today.get('fc', '').rstrip('℃')}℃" if today.get("fc") else temp_now,
-        min_temp=f"{today.get('fd', '').rstrip('℃')}℃" if today.get("fd") else temp_now
+        min_temp=f"{today.get('fd', '').rstrip('℃')}℃" if today.get("fd") else temp_now,
     )
 
     air_quality = AirQuality(
@@ -583,7 +623,8 @@ def get_weather(city_code: str) -> WeatherReport:
         alarms=alarms,
     )
 
-def build_alarm_messages(alarm_data: Optional[dict]) -> List[str]:
+
+def build_alarm_messages(alarm_data: dict | None) -> list[str]:
     if not alarm_data:
         return []
 
@@ -602,6 +643,7 @@ def build_alarm_messages(alarm_data: Optional[dict]) -> List[str]:
                 + detail
             )
     return messages
+
 
 def main_weather_process(output=0, city_name="", city_code="", color_mode="ansi"):
     try:
@@ -628,10 +670,10 @@ def main_weather_process(output=0, city_name="", city_code="", color_mode="ansi"
                         print(" [!]检测非地名字符，退出脚本")
                         sys.exit(1)
                     else:
-                        print(" [+] 使用手动输入定位位置："+address)
+                        print(" [+] 使用手动输入定位位置：" + address)
                         code = get_city_code(address)
             else:
-                print(" [+] 自动定位位置："+address)
+                print(" [+] 自动定位位置：" + address)
 
         try:
             weather_report = get_weather(code)
@@ -640,6 +682,7 @@ def main_weather_process(output=0, city_name="", city_code="", color_mode="ansi"
                 if color_mode == "rich":
                     try:
                         from rich import print as rich_print
+
                         rich_print("\n" + report_text + "\n")
                     except ImportError:
                         print(" [!] 未安装 rich，已回退到 ANSI 配色输出")
@@ -658,7 +701,7 @@ def main_weather_process(output=0, city_name="", city_code="", color_mode="ansi"
                     window.title("天气信息 - GetWeather")
                     window.geometry("600x500")
                     window.resizable(True, True)
-                    
+
                     # 创建带滚动条的文本框
                     text_area = scrolledtext.ScrolledText(
                         window,
@@ -669,24 +712,27 @@ def main_weather_process(output=0, city_name="", city_code="", color_mode="ansi"
                         bg="#f0f0f0",
                         fg="#333333",
                         padx=10,
-                        pady=10
+                        pady=10,
                     )
                     text_area.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
-                    
+
                     # 插入天气信息
                     text_area.insert(tk.INSERT, weather_text)
                     text_area.config(state=tk.DISABLED)  # 设置为只读
-                    
+
                     # 居中显示窗口
                     window.update_idletasks()
                     x = (window.winfo_screenwidth() // 2) - (window.winfo_width() // 2)
-                    y = (window.winfo_screenheight() // 2) - (window.winfo_height() // 2)
+                    y = (window.winfo_screenheight() // 2) - (
+                        window.winfo_height() // 2
+                    )
                     window.geometry(f"+{x}+{y}")
-                    
+
                     window.mainloop()
+
                 create_weather_window(report_text)
         except Exception as Error:
-            print(' [!] 未能找到该地区的天气信息')
+            print(" [!] 未能找到该地区的天气信息")
             print(" [#] 退出脚本")
             raise Error
             sys.exit()
@@ -710,7 +756,9 @@ def debug_mode(city):
     for url in urls:
         try:
             # d1.weather.com.cn 必须携带 Referer, 否则返回 403
-            response = http_get(url, headers=create_headers('', 'http://www.weather.com.cn'), timeout=10)
+            response = http_get(
+                url, headers=create_headers("", "http://www.weather.com.cn"), timeout=10
+            )
             # 打印状态码并存储结果
             print(f"URL: {url}, Status Code: {response.status_code}")
             results.append({"url": url, "status_code": response.status_code})
@@ -724,15 +772,35 @@ def debug_mode(city):
         json.dump(results, f, ensure_ascii=False, indent=4)
     print("Debug results saved to debug_results.json")
 
-if __name__ == '__main__':
-    
+
+if __name__ == "__main__":
     # 改动 2：支持命令行参数解析
     parser = argparse.ArgumentParser(description="Weather Script with Debug Mode")
-    parser.add_argument("--debug", action="store_true", help="启用 Debug 模式，仅检查状态码")
-    parser.add_argument("--city-code", type=str, default=None, help="城市代码 (例: 101010100)；提供时跳过定位直接查询，与 --city-name 同时给出时后者优先")
-    parser.add_argument("--city-name", type=str, help="城市名称 (例: 北京)，提供时跳过自动定位")
-    parser.add_argument("--output", type=int, default=0, help="输出模式，0为shell输出，1为窗口输出(窗口仅输出天气信息)")
-    parser.add_argument("--color-mode", type=str, choices=["none", "ansi", "rich"], default="ansi", help="终端配色模式: none/ansi/rich")
+    parser.add_argument(
+        "--debug", action="store_true", help="启用 Debug 模式，仅检查状态码"
+    )
+    parser.add_argument(
+        "--city-code",
+        type=str,
+        default=None,
+        help="城市代码 (例: 101010100)；提供时跳过定位直接查询，与 --city-name 同时给出时后者优先",
+    )
+    parser.add_argument(
+        "--city-name", type=str, help="城市名称 (例: 北京)，提供时跳过自动定位"
+    )
+    parser.add_argument(
+        "--output",
+        type=int,
+        default=0,
+        help="输出模式，0为shell输出，1为窗口输出(窗口仅输出天气信息)",
+    )
+    parser.add_argument(
+        "--color-mode",
+        type=str,
+        choices=["none", "ansi", "rich"],
+        default="ansi",
+        help="终端配色模式: none/ansi/rich",
+    )
     args = parser.parse_args()
 
     # 改动 3：根据参数选择运行模式
@@ -741,6 +809,6 @@ if __name__ == '__main__':
     else:
         output = args.output
         city_name = args.city_name
-        city_code = args.city_code 
+        city_code = args.city_code
         color_mode = args.color_mode
         main_weather_process(output, city_name, city_code, color_mode)
