@@ -1,8 +1,24 @@
+# Python
 __pycache__/
 *.pyc
 *.pyo
 .pytest_cache/
-response.html
-debug_results.json
+
+# 密钥(绝不入库)
 .env
 *.env
+
+# 调试产物
+response.html
+debug_results.json
+
+# IDE / 编辑器
+.vscode/
+.idea/
+
+# 本地归档(仅留存本地, 不上传)
+test/backup/
+
+# 系统杂物
+Thumbs.db
+.DS_Store
