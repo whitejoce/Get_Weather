@@ -17,6 +17,7 @@ debug_results.json
 .idea/
 
 # 本地归档(仅留存本地, 不上传)
+docs/backup/
 test/backup/
 
 # 系统杂物
