@@ -33,7 +33,7 @@ python scripts/GetWeather.py --city-name 嘉兴          # 人类可读文本
 ```
 
 - 进度信息走 stderr，stdout 纯 JSON 可直接解析
-- **官方 API 数据源（可选）**：存在 API Key 时自动改走[华风爱科开放平台](https://platform.weathercn.com)（中国气象局华风 × AccuWeather），额外提供官方原生摘要（含"比昨天"）、日出日落/月相、逐小时预报、MEP 空气质量、结构化预警；无 Key 或调用失败自动回退网页方案
+- **官方 API 数据源（可选）**：存在 API Key 时自动改走[华风爱科开放平台](https://platform.weathercn.com)（中国气象局华风 × AccuWeather），额外提供官方原生摘要（含"比昨天"）、日出日落/月相、逐小时预报、MEP 空气质量、结构化预警、**分钟级短临降水**（未来 2 小时，中国区域；文本模式同时用于雨具建议与强度条展示）；无 Key 或调用失败自动回退网页方案
 - Key 配置：环境变量 `WEATHERCN_API_KEY` / `API_KEY`，或脚本目录 / 当前目录 `.env`（参考 `.env.example`）
 
 ## 测试

@@ -1,0 +1,62 @@
+{
+  "Status": "0",
+  "Msg": "ok",
+  "Lat": 30.761,
+  "Lon": 120.758,
+  "Data": {
+    "IfPre": false,
+    "IsLocalPre": false,
+    "PreTypeCode": 0,
+    "PreType": "",
+    "NearestPreDirection": "",
+    "NearestPre": 999,
+    "Intensity": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "Interval": 6,
+    "Description": "未来2小时无降水",
+    "ShortPhrase": "",
+    "Datetime": "2026-10-05T09:36:00+08:00",
+    "Epochtime": 1791164160,
+    "MobileLink": "https://m.weathercn.com/weatherMap.do?mapType=precip&lang=zh-cn&z=wtmygzwt&phrase=未来2小时无降水",
+    "CurrentConditions": {
+      "WeatherText": "多云",
+      "WeatherCode": "01"
+    },
+    "HourlyForecastsNext2H": [
+      {
+        "Datetime": "2026-10-05T10:00:00+08:00",
+        "Epochtime": 1791165600,
+        "WeatherText": "晴",
+        "WeatherCode": "00",
+        "PrecipitationProbability": 0
+      },
+      {
+        "Datetime": "2026-10-05T11:00:00+08:00",
+        "Epochtime": 1791169200,
+        "WeatherText": "晴",
+        "WeatherCode": "00",
+        "PrecipitationProbability": 0
+      }
+    ]
+  }
+}

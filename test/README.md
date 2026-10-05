@@ -89,6 +89,11 @@ python -m pytest test/
 | `alarm1.json` | 北京 2 则预警样本（alarmDZ，2025-02） |
 | `alarm2.json` | 无预警样本（`{"w":[]}`） |
 | `qweather_summaries_30cities.json` | 和风摘要采集样本（句式参考） |
+| `api_*_jiaxing.json`（7 个） | 华风爱科官方 API 嘉兴样本：translate / current / daily5 / hourly12(details=true) / air / alerts / nowcast（由 `fetch_fixtures.py` 抓取，需 `.env` 的 API_KEY） |
+
+> 官方 API 文档与实测响应的差异（2026-10 核对，实现在 `_api_clean_payload` 注释中同步记录）：hourly 无 `PrecipitationIntensity`；airquality observations 无文档样例中的 `Category`/`PrimaryPollutant`（等级本地按国标阈值计算，首要污染物取自 daily `AirAndPollen`）；鉴权仅查询参数可用（`X-Gw-API-Key`/`apikey` 请求头网关均拒绝）。
+
+> 短临样本：`api_nowcast_jiaxing.json` 为无雨样本（`Description`="未来2小时无降水"）。`Intensity` 实测为浮点强度（2026-10 厦门小雨峰值 0.236，疑为 mm/h），`< 0.1` 视为无有效降水；`Interval` 步长实测 **6 分钟**（文档写 5），常见 20 格 × 6 = 120 分钟完整窗口；`Description`/`ShortPhrase` 为官方原句，三态均有措辞（无雨 / 附近有雨"附近有降水，出门建议带伞" / 本地将下雨"20分钟后开始下小雨，下下停停"），合成时优先透传。
 
 ## 更新样本
 

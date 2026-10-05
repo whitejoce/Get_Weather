@@ -1,1 +1,1346 @@
-[{"DateTime":"2026-09-29T16:00:00+08:00","EpochDateTime":1790668800,"WeatherIcon":7,"IconPhrase":"多云","HasPrecipitation":false,"IsDaylight":true,"Temperature":{"Value":25.0,"Unit":"C","UnitType":17},"LocalSource":{"Id":7,"Name":"Huafeng","WeatherCode":"01","WindLevelCode":"0","WindDirectionCode":"2","Pressure":1011.56},"PrecipitationProbability":20,"MobileLink":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=16&unit=c&lang=zh-cn","Link":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=16&unit=c&lang=zh-cn"},{"DateTime":"2026-09-29T17:00:00+08:00","EpochDateTime":1790672400,"WeatherIcon":18,"IconPhrase":"雨","HasPrecipitation":true,"PrecipitationType":"Rain","PrecipitationIntensity":"Moderate","IsDaylight":true,"Temperature":{"Value":25.0,"Unit":"C","UnitType":17},"LocalSource":{"Id":7,"Name":"Huafeng","WeatherCode":"07","WindLevelCode":"0","WindDirectionCode":"2","Pressure":1011.83},"PrecipitationProbability":55,"MobileLink":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=17&unit=c&lang=zh-cn","Link":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=17&unit=c&lang=zh-cn"},{"DateTime":"2026-09-29T18:00:00+08:00","EpochDateTime":1790676000,"WeatherIcon":7,"IconPhrase":"多云","HasPrecipitation":false,"IsDaylight":false,"Temperature":{"Value":24.0,"Unit":"C","UnitType":17},"LocalSource":{"Id":7,"Name":"Huafeng","WeatherCode":"01","WindLevelCode":"0","WindDirectionCode":"2","Pressure":1011.93},"PrecipitationProbability":16,"MobileLink":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=18&unit=c&lang=zh-cn","Link":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=18&unit=c&lang=zh-cn"},{"DateTime":"2026-09-29T19:00:00+08:00","EpochDateTime":1790679600,"WeatherIcon":7,"IconPhrase":"多云","HasPrecipitation":false,"IsDaylight":false,"Temperature":{"Value":24.0,"Unit":"C","UnitType":17},"LocalSource":{"Id":7,"Name":"Huafeng","WeatherCode":"01","WindLevelCode":"0","WindDirectionCode":"2","Pressure":1012.23},"PrecipitationProbability":7,"MobileLink":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=19&unit=c&lang=zh-cn","Link":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=19&unit=c&lang=zh-cn"},{"DateTime":"2026-09-29T20:00:00+08:00","EpochDateTime":1790683200,"WeatherIcon":18,"IconPhrase":"雨","HasPrecipitation":true,"PrecipitationType":"Rain","PrecipitationIntensity":"Moderate","IsDaylight":false,"Temperature":{"Value":23.0,"Unit":"C","UnitType":17},"LocalSource":{"Id":7,"Name":"Huafeng","WeatherCode":"07","WindLevelCode":"0","WindDirectionCode":"2","Pressure":1012.77},"PrecipitationProbability":70,"MobileLink":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=20&unit=c&lang=zh-cn","Link":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=20&unit=c&lang=zh-cn"},{"DateTime":"2026-09-29T21:00:00+08:00","EpochDateTime":1790686800,"WeatherIcon":7,"IconPhrase":"多云","HasPrecipitation":false,"IsDaylight":false,"Temperature":{"Value":23.0,"Unit":"C","UnitType":17},"LocalSource":{"Id":7,"Name":"Huafeng","WeatherCode":"01","WindLevelCode":"0","WindDirectionCode":"1","Pressure":1013.10},"PrecipitationProbability":7,"MobileLink":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=21&unit=c&lang=zh-cn","Link":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=21&unit=c&lang=zh-cn"},{"DateTime":"2026-09-29T22:00:00+08:00","EpochDateTime":1790690400,"WeatherIcon":7,"IconPhrase":"多云","HasPrecipitation":false,"IsDaylight":false,"Temperature":{"Value":23.0,"Unit":"C","UnitType":17},"LocalSource":{"Id":7,"Name":"Huafeng","WeatherCode":"01","WindLevelCode":"0","WindDirectionCode":"1","Pressure":1013.10},"PrecipitationProbability":7,"MobileLink":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=22&unit=c&lang=zh-cn","Link":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=22&unit=c&lang=zh-cn"},{"DateTime":"2026-09-29T23:00:00+08:00","EpochDateTime":1790694000,"WeatherIcon":7,"IconPhrase":"多云","HasPrecipitation":false,"IsDaylight":false,"Temperature":{"Value":23.0,"Unit":"C","UnitType":17},"LocalSource":{"Id":7,"Name":"Huafeng","WeatherCode":"01","WindLevelCode":"0","WindDirectionCode":"2","Pressure":1013.07},"PrecipitationProbability":7,"MobileLink":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=23&unit=c&lang=zh-cn","Link":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=23&unit=c&lang=zh-cn"},{"DateTime":"2026-09-30T00:00:00+08:00","EpochDateTime":1790697600,"WeatherIcon":7,"IconPhrase":"多云","HasPrecipitation":false,"IsDaylight":false,"Temperature":{"Value":23.0,"Unit":"C","UnitType":17},"LocalSource":{"Id":7,"Name":"Huafeng","WeatherCode":"01","WindLevelCode":"0","WindDirectionCode":"2","Pressure":1012.93},"PrecipitationProbability":10,"MobileLink":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=2&hbhhour=0&unit=c&lang=zh-cn","Link":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=2&hbhhour=0&unit=c&lang=zh-cn"},{"DateTime":"2026-09-30T01:00:00+08:00","EpochDateTime":1790701200,"WeatherIcon":7,"IconPhrase":"多云","HasPrecipitation":false,"IsDaylight":false,"Temperature":{"Value":23.0,"Unit":"C","UnitType":17},"LocalSource":{"Id":7,"Name":"Huafeng","WeatherCode":"01","WindLevelCode":"0","WindDirectionCode":"2","Pressure":1012.62},"PrecipitationProbability":49,"MobileLink":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=2&hbhhour=1&unit=c&lang=zh-cn","Link":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=2&hbhhour=1&unit=c&lang=zh-cn"},{"DateTime":"2026-09-30T02:00:00+08:00","EpochDateTime":1790704800,"WeatherIcon":7,"IconPhrase":"多云","HasPrecipitation":false,"IsDaylight":false,"Temperature":{"Value":23.0,"Unit":"C","UnitType":17},"LocalSource":{"Id":7,"Name":"Huafeng","WeatherCode":"01","WindLevelCode":"0","WindDirectionCode":"1","Pressure":1012.31},"PrecipitationProbability":49,"MobileLink":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=2&hbhhour=2&unit=c&lang=zh-cn","Link":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=2&hbhhour=2&unit=c&lang=zh-cn"},{"DateTime":"2026-09-30T03:00:00+08:00","EpochDateTime":1790708400,"WeatherIcon":7,"IconPhrase":"多云","HasPrecipitation":false,"IsDaylight":false,"Temperature":{"Value":24.0,"Unit":"C","UnitType":17},"LocalSource":{"Id":7,"Name":"Huafeng","WeatherCode":"01","WindLevelCode":"0","WindDirectionCode":"1","Pressure":1012.15},"PrecipitationProbability":58,"MobileLink":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=2&hbhhour=3&unit=c&lang=zh-cn","Link":"http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=2&hbhhour=3&unit=c&lang=zh-cn"}]
+[
+  {
+    "DateTime": "2026-10-05T12:00:00+08:00",
+    "EpochDateTime": 1791172800,
+    "WeatherIcon": 1,
+    "IconPhrase": "晴",
+    "HasPrecipitation": false,
+    "IsDaylight": true,
+    "Temperature": {
+      "Value": 23.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "LocalSource": {
+      "Id": 7,
+      "Name": "Huafeng",
+      "WeatherCode": "00",
+      "WindLevelCode": "0",
+      "WindDirectionCode": "8",
+      "Pressure": 1020.48
+    },
+    "RealFeelTemperature": {
+      "Value": 23.8,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "RealFeelTemperatureShade": {
+      "Value": 20.3,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "WetBulbTemperature": {
+      "Value": 16.5,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "DewPoint": {
+      "Value": 13.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "Wind": {
+      "Speed": {
+        "Value": 10.8,
+        "Unit": "km/h",
+        "UnitType": 7
+      },
+      "Direction": {
+        "Degrees": 338,
+        "Localized": "北",
+        "English": "N"
+      }
+    },
+    "WindGust": {
+      "Speed": {
+        "Value": 33.3,
+        "Unit": "km/h",
+        "UnitType": 7
+      }
+    },
+    "RelativeHumidity": 56,
+    "IndoorRelativeHumidity": 56,
+    "Visibility": {
+      "Value": 16.1,
+      "Unit": "km",
+      "UnitType": 6
+    },
+    "Ceiling": {
+      "Value": 9144.0,
+      "Unit": "m",
+      "UnitType": 5
+    },
+    "UVIndex": 6,
+    "UVIndexText": "中等",
+    "PrecipitationProbability": 0,
+    "ThunderstormProbability": 0,
+    "RainProbability": 0,
+    "SnowProbability": 0,
+    "IceProbability": 0,
+    "TotalLiquid": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Rain": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Snow": {
+      "Value": 0.0,
+      "Unit": "cm",
+      "UnitType": 4
+    },
+    "Ice": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "CloudCover": 10,
+    "Evapotranspiration": {
+      "Value": 0.5,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "SolarIrradiance": {
+      "Value": 878.6,
+      "Unit": "W/m²",
+      "UnitType": 33
+    },
+    "MobileLink": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=12&unit=c&lang=zh-cn",
+    "Link": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=12&unit=c&lang=zh-cn"
+  },
+  {
+    "DateTime": "2026-10-05T13:00:00+08:00",
+    "EpochDateTime": 1791176400,
+    "WeatherIcon": 1,
+    "IconPhrase": "晴",
+    "HasPrecipitation": false,
+    "IsDaylight": true,
+    "Temperature": {
+      "Value": 23.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "LocalSource": {
+      "Id": 7,
+      "Name": "Huafeng",
+      "WeatherCode": "00",
+      "WindLevelCode": "0",
+      "WindDirectionCode": "7",
+      "Pressure": 1019.97
+    },
+    "RealFeelTemperature": {
+      "Value": 24.2,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "RealFeelTemperatureShade": {
+      "Value": 21.1,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "WetBulbTemperature": {
+      "Value": 16.5,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "DewPoint": {
+      "Value": 12.5,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "Wind": {
+      "Speed": {
+        "Value": 10.8,
+        "Unit": "km/h",
+        "UnitType": 7
+      },
+      "Direction": {
+        "Degrees": 331,
+        "Localized": "西北",
+        "English": "NW"
+      }
+    },
+    "WindGust": {
+      "Speed": {
+        "Value": 35.2,
+        "Unit": "km/h",
+        "UnitType": 7
+      }
+    },
+    "RelativeHumidity": 52,
+    "IndoorRelativeHumidity": 52,
+    "Visibility": {
+      "Value": 16.1,
+      "Unit": "km",
+      "UnitType": 6
+    },
+    "Ceiling": {
+      "Value": 9144.0,
+      "Unit": "m",
+      "UnitType": 5
+    },
+    "UVIndex": 5,
+    "UVIndexText": "中等",
+    "PrecipitationProbability": 0,
+    "ThunderstormProbability": 0,
+    "RainProbability": 0,
+    "SnowProbability": 0,
+    "IceProbability": 0,
+    "TotalLiquid": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Rain": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Snow": {
+      "Value": 0.0,
+      "Unit": "cm",
+      "UnitType": 4
+    },
+    "Ice": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "CloudCover": 17,
+    "Evapotranspiration": {
+      "Value": 0.5,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "SolarIrradiance": {
+      "Value": 845.1,
+      "Unit": "W/m²",
+      "UnitType": 33
+    },
+    "MobileLink": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=13&unit=c&lang=zh-cn",
+    "Link": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=13&unit=c&lang=zh-cn"
+  },
+  {
+    "DateTime": "2026-10-05T14:00:00+08:00",
+    "EpochDateTime": 1791180000,
+    "WeatherIcon": 1,
+    "IconPhrase": "晴",
+    "HasPrecipitation": false,
+    "IsDaylight": true,
+    "Temperature": {
+      "Value": 23.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "LocalSource": {
+      "Id": 7,
+      "Name": "Huafeng",
+      "WeatherCode": "00",
+      "WindLevelCode": "0",
+      "WindDirectionCode": "7",
+      "Pressure": 1019.45
+    },
+    "RealFeelTemperature": {
+      "Value": 23.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "RealFeelTemperatureShade": {
+      "Value": 20.3,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "WetBulbTemperature": {
+      "Value": 16.1,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "DewPoint": {
+      "Value": 12.3,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "Wind": {
+      "Speed": {
+        "Value": 10.8,
+        "Unit": "km/h",
+        "UnitType": 7
+      },
+      "Direction": {
+        "Degrees": 323,
+        "Localized": "西北",
+        "English": "NW"
+      }
+    },
+    "WindGust": {
+      "Speed": {
+        "Value": 37.0,
+        "Unit": "km/h",
+        "UnitType": 7
+      }
+    },
+    "RelativeHumidity": 53,
+    "IndoorRelativeHumidity": 53,
+    "Visibility": {
+      "Value": 16.1,
+      "Unit": "km",
+      "UnitType": 6
+    },
+    "Ceiling": {
+      "Value": 9144.0,
+      "Unit": "m",
+      "UnitType": 5
+    },
+    "UVIndex": 4,
+    "UVIndexText": "弱",
+    "PrecipitationProbability": 0,
+    "ThunderstormProbability": 0,
+    "RainProbability": 0,
+    "SnowProbability": 0,
+    "IceProbability": 0,
+    "TotalLiquid": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Rain": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Snow": {
+      "Value": 0.0,
+      "Unit": "cm",
+      "UnitType": 4
+    },
+    "Ice": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "CloudCover": 23,
+    "Evapotranspiration": {
+      "Value": 0.5,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "SolarIrradiance": {
+      "Value": 748.9,
+      "Unit": "W/m²",
+      "UnitType": 33
+    },
+    "MobileLink": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=14&unit=c&lang=zh-cn",
+    "Link": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=14&unit=c&lang=zh-cn"
+  },
+  {
+    "DateTime": "2026-10-05T15:00:00+08:00",
+    "EpochDateTime": 1791183600,
+    "WeatherIcon": 1,
+    "IconPhrase": "晴",
+    "HasPrecipitation": false,
+    "IsDaylight": true,
+    "Temperature": {
+      "Value": 23.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "LocalSource": {
+      "Id": 7,
+      "Name": "Huafeng",
+      "WeatherCode": "00",
+      "WindLevelCode": "0",
+      "WindDirectionCode": "4",
+      "Pressure": 1019.32
+    },
+    "RealFeelTemperature": {
+      "Value": 22.1,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "RealFeelTemperatureShade": {
+      "Value": 20.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "WetBulbTemperature": {
+      "Value": 16.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "DewPoint": {
+      "Value": 12.4,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "Wind": {
+      "Speed": {
+        "Value": 7.2,
+        "Unit": "km/h",
+        "UnitType": 7
+      },
+      "Direction": {
+        "Degrees": 163,
+        "Localized": "南",
+        "English": "S"
+      }
+    },
+    "WindGust": {
+      "Speed": {
+        "Value": 37.0,
+        "Unit": "km/h",
+        "UnitType": 7
+      }
+    },
+    "RelativeHumidity": 55,
+    "IndoorRelativeHumidity": 55,
+    "Visibility": {
+      "Value": 16.1,
+      "Unit": "km",
+      "UnitType": 6
+    },
+    "Ceiling": {
+      "Value": 9144.0,
+      "Unit": "m",
+      "UnitType": 5
+    },
+    "UVIndex": 3,
+    "UVIndexText": "弱",
+    "PrecipitationProbability": 0,
+    "ThunderstormProbability": 0,
+    "RainProbability": 0,
+    "SnowProbability": 0,
+    "IceProbability": 0,
+    "TotalLiquid": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Rain": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Snow": {
+      "Value": 0.0,
+      "Unit": "cm",
+      "UnitType": 4
+    },
+    "Ice": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "CloudCover": 44,
+    "Evapotranspiration": {
+      "Value": 0.3,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "SolarIrradiance": {
+      "Value": 570.0,
+      "Unit": "W/m²",
+      "UnitType": 33
+    },
+    "MobileLink": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=15&unit=c&lang=zh-cn",
+    "Link": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=15&unit=c&lang=zh-cn"
+  },
+  {
+    "DateTime": "2026-10-05T16:00:00+08:00",
+    "EpochDateTime": 1791187200,
+    "WeatherIcon": 1,
+    "IconPhrase": "晴",
+    "HasPrecipitation": false,
+    "IsDaylight": true,
+    "Temperature": {
+      "Value": 22.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "LocalSource": {
+      "Id": 7,
+      "Name": "Huafeng",
+      "WeatherCode": "00",
+      "WindLevelCode": "0",
+      "WindDirectionCode": "4",
+      "Pressure": 1019.65
+    },
+    "RealFeelTemperature": {
+      "Value": 20.2,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "RealFeelTemperatureShade": {
+      "Value": 18.8,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "WetBulbTemperature": {
+      "Value": 16.1,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "DewPoint": {
+      "Value": 12.9,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "Wind": {
+      "Speed": {
+        "Value": 7.2,
+        "Unit": "km/h",
+        "UnitType": 7
+      },
+      "Direction": {
+        "Degrees": 163,
+        "Localized": "南",
+        "English": "S"
+      }
+    },
+    "WindGust": {
+      "Speed": {
+        "Value": 33.3,
+        "Unit": "km/h",
+        "UnitType": 7
+      }
+    },
+    "RelativeHumidity": 62,
+    "IndoorRelativeHumidity": 62,
+    "Visibility": {
+      "Value": 16.1,
+      "Unit": "km",
+      "UnitType": 6
+    },
+    "Ceiling": {
+      "Value": 9144.0,
+      "Unit": "m",
+      "UnitType": 5
+    },
+    "UVIndex": 2,
+    "UVIndexText": "很弱",
+    "PrecipitationProbability": 0,
+    "ThunderstormProbability": 0,
+    "RainProbability": 0,
+    "SnowProbability": 0,
+    "IceProbability": 0,
+    "TotalLiquid": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Rain": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Snow": {
+      "Value": 0.0,
+      "Unit": "cm",
+      "UnitType": 4
+    },
+    "Ice": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "CloudCover": 66,
+    "Evapotranspiration": {
+      "Value": 0.3,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "SolarIrradiance": {
+      "Value": 316.5,
+      "Unit": "W/m²",
+      "UnitType": 33
+    },
+    "MobileLink": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=16&unit=c&lang=zh-cn",
+    "Link": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=16&unit=c&lang=zh-cn"
+  },
+  {
+    "DateTime": "2026-10-05T17:00:00+08:00",
+    "EpochDateTime": 1791190800,
+    "WeatherIcon": 1,
+    "IconPhrase": "晴",
+    "HasPrecipitation": false,
+    "IsDaylight": true,
+    "Temperature": {
+      "Value": 22.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "LocalSource": {
+      "Id": 7,
+      "Name": "Huafeng",
+      "WeatherCode": "00",
+      "WindLevelCode": "0",
+      "WindDirectionCode": "7",
+      "Pressure": 1020.12
+    },
+    "RealFeelTemperature": {
+      "Value": 20.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "RealFeelTemperatureShade": {
+      "Value": 18.2,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "WetBulbTemperature": {
+      "Value": 15.7,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "DewPoint": {
+      "Value": 13.2,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "Wind": {
+      "Speed": {
+        "Value": 7.2,
+        "Unit": "km/h",
+        "UnitType": 7
+      },
+      "Direction": {
+        "Degrees": 321,
+        "Localized": "西北",
+        "English": "NW"
+      }
+    },
+    "WindGust": {
+      "Speed": {
+        "Value": 27.8,
+        "Unit": "km/h",
+        "UnitType": 7
+      }
+    },
+    "RelativeHumidity": 68,
+    "IndoorRelativeHumidity": 65,
+    "Visibility": {
+      "Value": 16.1,
+      "Unit": "km",
+      "UnitType": 6
+    },
+    "Ceiling": {
+      "Value": 9144.0,
+      "Unit": "m",
+      "UnitType": 5
+    },
+    "UVIndex": 1,
+    "UVIndexText": "很弱",
+    "PrecipitationProbability": 0,
+    "ThunderstormProbability": 0,
+    "RainProbability": 0,
+    "SnowProbability": 0,
+    "IceProbability": 0,
+    "TotalLiquid": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Rain": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Snow": {
+      "Value": 0.0,
+      "Unit": "cm",
+      "UnitType": 4
+    },
+    "Ice": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "CloudCover": 87,
+    "Evapotranspiration": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "SolarIrradiance": {
+      "Value": 76.1,
+      "Unit": "W/m²",
+      "UnitType": 33
+    },
+    "MobileLink": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=17&unit=c&lang=zh-cn",
+    "Link": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=17&unit=c&lang=zh-cn"
+  },
+  {
+    "DateTime": "2026-10-05T18:00:00+08:00",
+    "EpochDateTime": 1791194400,
+    "WeatherIcon": 33,
+    "IconPhrase": "晴",
+    "HasPrecipitation": false,
+    "IsDaylight": false,
+    "Temperature": {
+      "Value": 21.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "LocalSource": {
+      "Id": 7,
+      "Name": "Huafeng",
+      "WeatherCode": "00",
+      "WindLevelCode": "0",
+      "WindDirectionCode": "7",
+      "Pressure": 1020.57
+    },
+    "RealFeelTemperature": {
+      "Value": 19.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "RealFeelTemperatureShade": {
+      "Value": 17.2,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "WetBulbTemperature": {
+      "Value": 15.2,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "DewPoint": {
+      "Value": 13.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "Wind": {
+      "Speed": {
+        "Value": 7.2,
+        "Unit": "km/h",
+        "UnitType": 7
+      },
+      "Direction": {
+        "Degrees": 321,
+        "Localized": "西北",
+        "English": "NW"
+      }
+    },
+    "WindGust": {
+      "Speed": {
+        "Value": 25.9,
+        "Unit": "km/h",
+        "UnitType": 7
+      }
+    },
+    "RelativeHumidity": 72,
+    "IndoorRelativeHumidity": 64,
+    "Visibility": {
+      "Value": 16.1,
+      "Unit": "km",
+      "UnitType": 6
+    },
+    "Ceiling": {
+      "Value": 9144.0,
+      "Unit": "m",
+      "UnitType": 5
+    },
+    "UVIndex": 0,
+    "UVIndexText": "很弱",
+    "PrecipitationProbability": 0,
+    "ThunderstormProbability": 0,
+    "RainProbability": 0,
+    "SnowProbability": 0,
+    "IceProbability": 0,
+    "TotalLiquid": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Rain": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Snow": {
+      "Value": 0.0,
+      "Unit": "cm",
+      "UnitType": 4
+    },
+    "Ice": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "CloudCover": 59,
+    "Evapotranspiration": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "SolarIrradiance": {
+      "Value": 0.0,
+      "Unit": "W/m²",
+      "UnitType": 33
+    },
+    "MobileLink": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=18&unit=c&lang=zh-cn",
+    "Link": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=18&unit=c&lang=zh-cn"
+  },
+  {
+    "DateTime": "2026-10-05T19:00:00+08:00",
+    "EpochDateTime": 1791198000,
+    "WeatherIcon": 33,
+    "IconPhrase": "晴",
+    "HasPrecipitation": false,
+    "IsDaylight": false,
+    "Temperature": {
+      "Value": 20.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "LocalSource": {
+      "Id": 7,
+      "Name": "Huafeng",
+      "WeatherCode": "00",
+      "WindLevelCode": "0",
+      "WindDirectionCode": "7",
+      "Pressure": 1021.03
+    },
+    "RealFeelTemperature": {
+      "Value": 18.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "RealFeelTemperatureShade": {
+      "Value": 16.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "WetBulbTemperature": {
+      "Value": 14.5,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "DewPoint": {
+      "Value": 12.6,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "Wind": {
+      "Speed": {
+        "Value": 3.6,
+        "Unit": "km/h",
+        "UnitType": 7
+      },
+      "Direction": {
+        "Degrees": 320,
+        "Localized": "西北",
+        "English": "NW"
+      }
+    },
+    "WindGust": {
+      "Speed": {
+        "Value": 25.9,
+        "Unit": "km/h",
+        "UnitType": 7
+      }
+    },
+    "RelativeHumidity": 76,
+    "IndoorRelativeHumidity": 62,
+    "Visibility": {
+      "Value": 16.1,
+      "Unit": "km",
+      "UnitType": 6
+    },
+    "Ceiling": {
+      "Value": 9144.0,
+      "Unit": "m",
+      "UnitType": 5
+    },
+    "UVIndex": 0,
+    "UVIndexText": "很弱",
+    "PrecipitationProbability": 0,
+    "ThunderstormProbability": 0,
+    "RainProbability": 0,
+    "SnowProbability": 0,
+    "IceProbability": 0,
+    "TotalLiquid": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Rain": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Snow": {
+      "Value": 0.0,
+      "Unit": "cm",
+      "UnitType": 4
+    },
+    "Ice": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "CloudCover": 31,
+    "Evapotranspiration": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "SolarIrradiance": {
+      "Value": 0.0,
+      "Unit": "W/m²",
+      "UnitType": 33
+    },
+    "MobileLink": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=19&unit=c&lang=zh-cn",
+    "Link": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=19&unit=c&lang=zh-cn"
+  },
+  {
+    "DateTime": "2026-10-05T20:00:00+08:00",
+    "EpochDateTime": 1791201600,
+    "WeatherIcon": 33,
+    "IconPhrase": "晴",
+    "HasPrecipitation": false,
+    "IsDaylight": false,
+    "Temperature": {
+      "Value": 19.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "LocalSource": {
+      "Id": 7,
+      "Name": "Huafeng",
+      "WeatherCode": "00",
+      "WindLevelCode": "0",
+      "WindDirectionCode": "7",
+      "Pressure": 1021.44
+    },
+    "RealFeelTemperature": {
+      "Value": 17.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "RealFeelTemperatureShade": {
+      "Value": 14.8,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "WetBulbTemperature": {
+      "Value": 13.8,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "DewPoint": {
+      "Value": 12.1,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "Wind": {
+      "Speed": {
+        "Value": 3.6,
+        "Unit": "km/h",
+        "UnitType": 7
+      },
+      "Direction": {
+        "Degrees": 320,
+        "Localized": "西北",
+        "English": "NW"
+      }
+    },
+    "WindGust": {
+      "Speed": {
+        "Value": 24.1,
+        "Unit": "km/h",
+        "UnitType": 7
+      }
+    },
+    "RelativeHumidity": 79,
+    "IndoorRelativeHumidity": 60,
+    "Visibility": {
+      "Value": 16.1,
+      "Unit": "km",
+      "UnitType": 6
+    },
+    "Ceiling": {
+      "Value": 9144.0,
+      "Unit": "m",
+      "UnitType": 5
+    },
+    "UVIndex": 0,
+    "UVIndexText": "很弱",
+    "PrecipitationProbability": 0,
+    "ThunderstormProbability": 0,
+    "RainProbability": 0,
+    "SnowProbability": 0,
+    "IceProbability": 0,
+    "TotalLiquid": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Rain": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Snow": {
+      "Value": 0.0,
+      "Unit": "cm",
+      "UnitType": 4
+    },
+    "Ice": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "CloudCover": 3,
+    "Evapotranspiration": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "SolarIrradiance": {
+      "Value": 0.0,
+      "Unit": "W/m²",
+      "UnitType": 33
+    },
+    "MobileLink": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=20&unit=c&lang=zh-cn",
+    "Link": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=20&unit=c&lang=zh-cn"
+  },
+  {
+    "DateTime": "2026-10-05T21:00:00+08:00",
+    "EpochDateTime": 1791205200,
+    "WeatherIcon": 33,
+    "IconPhrase": "晴",
+    "HasPrecipitation": false,
+    "IsDaylight": false,
+    "Temperature": {
+      "Value": 19.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "LocalSource": {
+      "Id": 7,
+      "Name": "Huafeng",
+      "WeatherCode": "00",
+      "WindLevelCode": "0",
+      "WindDirectionCode": "7",
+      "Pressure": 1021.64
+    },
+    "RealFeelTemperature": {
+      "Value": 17.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "RealFeelTemperatureShade": {
+      "Value": 14.2,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "WetBulbTemperature": {
+      "Value": 13.4,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "DewPoint": {
+      "Value": 11.8,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "Wind": {
+      "Speed": {
+        "Value": 7.2,
+        "Unit": "km/h",
+        "UnitType": 7
+      },
+      "Direction": {
+        "Degrees": 325,
+        "Localized": "西北",
+        "English": "NW"
+      }
+    },
+    "WindGust": {
+      "Speed": {
+        "Value": 24.1,
+        "Unit": "km/h",
+        "UnitType": 7
+      }
+    },
+    "RelativeHumidity": 80,
+    "IndoorRelativeHumidity": 59,
+    "Visibility": {
+      "Value": 16.1,
+      "Unit": "km",
+      "UnitType": 6
+    },
+    "Ceiling": {
+      "Value": 9144.0,
+      "Unit": "m",
+      "UnitType": 5
+    },
+    "UVIndex": 0,
+    "UVIndexText": "很弱",
+    "PrecipitationProbability": 0,
+    "ThunderstormProbability": 0,
+    "RainProbability": 0,
+    "SnowProbability": 0,
+    "IceProbability": 0,
+    "TotalLiquid": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Rain": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Snow": {
+      "Value": 0.0,
+      "Unit": "cm",
+      "UnitType": 4
+    },
+    "Ice": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "CloudCover": 2,
+    "Evapotranspiration": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "SolarIrradiance": {
+      "Value": 0.0,
+      "Unit": "W/m²",
+      "UnitType": 33
+    },
+    "MobileLink": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=21&unit=c&lang=zh-cn",
+    "Link": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=21&unit=c&lang=zh-cn"
+  },
+  {
+    "DateTime": "2026-10-05T22:00:00+08:00",
+    "EpochDateTime": 1791208800,
+    "WeatherIcon": 33,
+    "IconPhrase": "晴",
+    "HasPrecipitation": false,
+    "IsDaylight": false,
+    "Temperature": {
+      "Value": 19.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "LocalSource": {
+      "Id": 7,
+      "Name": "Huafeng",
+      "WeatherCode": "00",
+      "WindLevelCode": "0",
+      "WindDirectionCode": "7",
+      "Pressure": 1021.7
+    },
+    "RealFeelTemperature": {
+      "Value": 17.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "RealFeelTemperatureShade": {
+      "Value": 13.5,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "WetBulbTemperature": {
+      "Value": 12.9,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "DewPoint": {
+      "Value": 11.4,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "Wind": {
+      "Speed": {
+        "Value": 7.2,
+        "Unit": "km/h",
+        "UnitType": 7
+      },
+      "Direction": {
+        "Degrees": 330,
+        "Localized": "西北",
+        "English": "NW"
+      }
+    },
+    "WindGust": {
+      "Speed": {
+        "Value": 22.2,
+        "Unit": "km/h",
+        "UnitType": 7
+      }
+    },
+    "RelativeHumidity": 81,
+    "IndoorRelativeHumidity": 57,
+    "Visibility": {
+      "Value": 16.1,
+      "Unit": "km",
+      "UnitType": 6
+    },
+    "Ceiling": {
+      "Value": 9144.0,
+      "Unit": "m",
+      "UnitType": 5
+    },
+    "UVIndex": 0,
+    "UVIndexText": "很弱",
+    "PrecipitationProbability": 0,
+    "ThunderstormProbability": 0,
+    "RainProbability": 0,
+    "SnowProbability": 0,
+    "IceProbability": 0,
+    "TotalLiquid": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Rain": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Snow": {
+      "Value": 0.0,
+      "Unit": "cm",
+      "UnitType": 4
+    },
+    "Ice": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "CloudCover": 1,
+    "Evapotranspiration": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "SolarIrradiance": {
+      "Value": 0.0,
+      "Unit": "W/m²",
+      "UnitType": 33
+    },
+    "MobileLink": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=22&unit=c&lang=zh-cn",
+    "Link": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=22&unit=c&lang=zh-cn"
+  },
+  {
+    "DateTime": "2026-10-05T23:00:00+08:00",
+    "EpochDateTime": 1791212400,
+    "WeatherIcon": 33,
+    "IconPhrase": "晴",
+    "HasPrecipitation": false,
+    "IsDaylight": false,
+    "Temperature": {
+      "Value": 18.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "LocalSource": {
+      "Id": 7,
+      "Name": "Huafeng",
+      "WeatherCode": "00",
+      "WindLevelCode": "0",
+      "WindDirectionCode": "7",
+      "Pressure": 1021.74
+    },
+    "RealFeelTemperature": {
+      "Value": 16.0,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "RealFeelTemperatureShade": {
+      "Value": 13.1,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "WetBulbTemperature": {
+      "Value": 12.6,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "DewPoint": {
+      "Value": 11.1,
+      "Unit": "C",
+      "UnitType": 17
+    },
+    "Wind": {
+      "Speed": {
+        "Value": 10.8,
+        "Unit": "km/h",
+        "UnitType": 7
+      },
+      "Direction": {
+        "Degrees": 335,
+        "Localized": "西北",
+        "English": "NW"
+      }
+    },
+    "WindGust": {
+      "Speed": {
+        "Value": 22.2,
+        "Unit": "km/h",
+        "UnitType": 7
+      }
+    },
+    "RelativeHumidity": 81,
+    "IndoorRelativeHumidity": 56,
+    "Visibility": {
+      "Value": 16.1,
+      "Unit": "km",
+      "UnitType": 6
+    },
+    "Ceiling": {
+      "Value": 9144.0,
+      "Unit": "m",
+      "UnitType": 5
+    },
+    "UVIndex": 0,
+    "UVIndexText": "很弱",
+    "PrecipitationProbability": 0,
+    "ThunderstormProbability": 0,
+    "RainProbability": 0,
+    "SnowProbability": 0,
+    "IceProbability": 0,
+    "TotalLiquid": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Rain": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "Snow": {
+      "Value": 0.0,
+      "Unit": "cm",
+      "UnitType": 4
+    },
+    "Ice": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "CloudCover": 0,
+    "Evapotranspiration": {
+      "Value": 0.0,
+      "Unit": "mm",
+      "UnitType": 3
+    },
+    "SolarIrradiance": {
+      "Value": 0.0,
+      "Unit": "W/m²",
+      "UnitType": 33
+    },
+    "MobileLink": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=23&unit=c&lang=zh-cn",
+    "Link": "http://m.weathercn.com/zh/cn/jiaxing/61618/hourly-weather-forecast/61618?day=1&hbhhour=23&unit=c&lang=zh-cn"
+  }
+]

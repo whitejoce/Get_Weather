@@ -146,41 +146,106 @@ class WeatherReport:
     air_quality: AirQuality
     umbrella: str
     alarms: List[str]
+    minute_cast: Optional[dict] = None  # 短临降水摘要(官方API); None=未启用/失败
 
     def as_text(self, color_mode: str = "none") -> str:
-        temp_now = style_text(
-            self.snapshot.temp_now, get_temp_style(self.snapshot.temp_now), color_mode
-        )
-        max_temp = style_text(
-            self.snapshot.max_temp, get_temp_style(self.snapshot.max_temp), color_mode
-        )
-        min_temp = style_text(
-            self.snapshot.min_temp, get_temp_style(self.snapshot.min_temp), color_mode
-        )
-        aqi_style = get_aqi_style(self.air_quality.aqi)
-        aqi_level = style_text(self.air_quality.level, aqi_style, color_mode)
-        aqi_value = style_text(self.air_quality.aqi, aqi_style, color_mode)
-        pm25_value = style_text(self.air_quality.pm25, aqi_style, color_mode)
+        return render_report_text(self, color_mode)
 
-        lines = [
-            f"● 根据天气查询结果，今天{self.snapshot.city_cn}的天气情况如下：",
-            "",
-            " 今日天气概况：",
-            f" - 🌤️ 天气：{self.snapshot.description}",
-            f" - 🌡️ 当前温度：{temp_now}℃",
-            f" - 📊 温度范围：{max_temp} ~ {min_temp}",
-            f" - 💧 湿度：{self.snapshot.humidity}",
-            f" - 🌬️ 空气质量：{aqi_level}（AQI: {aqi_value}，PM2.5: {pm25_value}）",
-            "",
-            " 生活建议：",
-            f" - ☂️ 雨具携带：{self.umbrella}",
-            f" - 📝 天气概况：{self.summary}",
-            "",
-            f" 更新时间：{self.snapshot.date} {self.snapshot.update_time}",
-        ]
-        if self.alarms:
-            lines.extend(self.alarms)
-        return "\n".join(lines)
+
+def _umbrella_text(report: WeatherReport) -> str:
+    """雨具建议文案: 短临可用时以"未来2小时是否降水"为准, 否则用 dataZS 静态指数。
+
+    三态: 本地有雨(钟点化提示) / 附近有雨(距离提示, 官方建议带伞) / 无雨。
+    """
+    mc = report.minute_cast
+    if mc is None:
+        return report.umbrella
+    if not mc.get("两小时内有雨"):
+        nearby = mc.get("附近降雨")
+        if nearby:
+            return f"附近{nearby.get('距离km')}km有降雨，出门建议带伞"
+        return "未来两小时无降水"
+    if mc.get("开始") == "当前":
+        if "雪" in str(mc.get("降水类型", "")):
+            return "正在下雪，建议带伞"
+        return "正在下雨，建议带伞"
+    clock = mc.get("开始钟点")
+    return f"{clock} 前后有雨，建议带伞" if clock else f"{mc.get('开始', '')}有雨，建议带伞"
+
+
+def _minute_cast_lines(mc: dict, color_mode: str) -> List[str]:
+    """短临降水区块(仅有雨时展开): 官方原句优先 + 强度条。
+
+    话术与雨具行分工: 雨具行给结论, 这里只给时序细节; 官方描述自带
+    "下小雨/下下停停"等强度与间歇语义, 不再追加雨势措辞。
+    """
+    seq = mc.get("强度序列") or []
+    interval = mc.get("步长分钟") or 5
+    window = len(seq) * interval
+    window_label = "未来2小时" if window == 120 else f"未来{window}分钟"
+    official = str(mc.get("官方描述") or "")
+    if official:
+        detail = official
+    else:
+        verb = "降雪" if "雪" in str(mc.get("降水类型", "")) else "降雨"
+        peak_text = nowcast_peak_text(mc.get("峰值强度"))
+        tail = f"，雨势{peak_text}" if peak_text else ""
+        if mc.get("窗口末端仍有降雨"):
+            detail = (f"{window}分钟内持续{verb}，暂无停歇迹象" if mc.get("开始") == "当前"
+                      else f"约 {mc.get('开始钟点', '')} 开始{verb}，之后持续有雨")
+        elif mc.get("开始") == "当前":
+            detail = f"持续到约 {mc.get('渐止钟点', '')} 前后渐止"
+        else:
+            detail = f"约 {mc.get('开始钟点', '')} 开始{verb}，持续约{mc.get('持续分钟', '')}分钟"
+        detail += tail
+    lines = [f" - ⏱️ 短临降水({window_label})：{detail}"]
+    bar = minute_cast_sparkline(seq)
+    if bar:
+        end_label = f"+{window // 60}h" if window % 60 == 0 else f"+{window}min"
+        pad = max(len(bar) - 4 - len(end_label), 1)  # "现在"占 4 列
+        lines.append("   " + style_text(bar, "cold", color_mode))
+        lines.append("   现在" + " " * pad + end_label)
+    return lines
+
+
+def render_report_text(report: WeatherReport, color_mode: str = "none") -> str:
+    temp_now = style_text(
+        report.snapshot.temp_now, get_temp_style(report.snapshot.temp_now), color_mode
+    )
+    max_temp = style_text(
+        report.snapshot.max_temp, get_temp_style(report.snapshot.max_temp), color_mode
+    )
+    min_temp = style_text(
+        report.snapshot.min_temp, get_temp_style(report.snapshot.min_temp), color_mode
+    )
+    aqi_style = get_aqi_style(report.air_quality.aqi)
+    aqi_level = style_text(report.air_quality.level, aqi_style, color_mode)
+    aqi_value = style_text(report.air_quality.aqi, aqi_style, color_mode)
+    pm25_value = style_text(report.air_quality.pm25, aqi_style, color_mode)
+
+    lines = [
+        f"● 根据天气查询结果，今天{report.snapshot.city_cn}的天气情况如下：",
+        "",
+        " 今日天气概况：",
+        f" - 🌤️ 天气：{report.snapshot.description}",
+        f" - 🌡️ 当前温度：{temp_now}℃",
+        f" - 📊 温度范围：{min_temp} ~ {max_temp}",
+        f" - 💧 湿度：{report.snapshot.humidity}",
+        f" - 🌬️ 空气质量：{aqi_level}（AQI: {aqi_value}，PM2.5: {pm25_value}）",
+        "",
+        " 生活建议：",
+        f" - 📝 天气概况：{report.summary}",
+        f" - ☂️ 雨具携带：{_umbrella_text(report)}",
+    ]
+    if report.minute_cast and report.minute_cast.get("两小时内有雨"):
+        lines.extend(_minute_cast_lines(report.minute_cast, color_mode))
+    lines.extend([
+        "",
+        f" 更新时间：{report.snapshot.date} {report.snapshot.update_time}",
+    ])
+    if report.alarms:
+        lines.extend(report.alarms)
+    return "\n".join(lines)
 
 
 def create_headers(cookie=None, referer=None):
@@ -599,9 +664,11 @@ def build_clean_data(index_html, data_sk, data_zs, alarm_dz, fc_days, yesterday_
 
 # ---------------- 官方 API 数据源(可选, 优先于网页抓取) ----------------
 # 提供 key 时走华风爱科开放平台(中国气象局华风×AccuWeather, openapi.weathercn.com):
-# 官方 JSON、Headline 原生摘要(含"比昨天")、日出日落/月相、逐小时预报、MEP 空气质量。
+# 官方 JSON、Headline 原生摘要(含"比昨天")、日出日落/月相、逐小时预报、MEP 空气质量、
+# 分钟级短临降水(中国区域, 未来2小时)。
 # key 读取优先级: 环境变量 WEATHERCN_API_KEY / API_KEY -> 脚本目录/上级/当前目录的 .env
-# 标准测试 Key 每日 500 次(5 QPS); 每次查询消耗 6 次(定位+实况+5日+逐时+空气+预警)。
+# 标准测试 Key 每日 500 次(5 QPS); JSON 模式每次查询消耗 7 次(定位+实况+5日+逐时+空气+预警+短临)。
+# 文本模式叠加短临时另需 translate 拿坐标(+2 次); 短临失败/非中国区域时静默跳过。
 
 OPENAPI_BASE = "https://openapi.weathercn.com"
 
@@ -624,6 +691,8 @@ def _load_api_key():
 
 
 def _api_get(path, api_key, **params):
+    # 文档推荐 X-Gw-API-Key 请求头, 但网关实测不接受(2026-10: 401 No API key found
+    # in request; apikey 头报 400 Apikey invalid), 仅查询参数可用, key 会出现在 URL 中
     resp = http_get(
         OPENAPI_BASE + path,
         params={"apikey": api_key, "language": "zh-cn", **params},
@@ -647,6 +716,159 @@ def api_location_key(city_name, api_key):
     return chosen.get("Key"), chosen
 
 
+# ---------------- 分钟级短临降水(标准能力, 仅中国区域) ----------------
+# nowcast_cn/v3/basic: q=纬度,经度。关键字段(2026-10 实测):
+#   Description/ShortPhrase: 官方原句, 三态都有现成措辞(无雨"未来2小时无降水"/
+#     附近有雨"附近有降水，出门建议带伞"/本地将下雨"20分钟后开始下小雨，下下停停"),
+#     优先透传给 摘要/官方描述, 本地合成为回退;
+#   Intensity: 浮点强度序列(小雨样本峰值 0.236, 疑为 mm/h), <0.1 不计入"有雨";
+#   Interval: 步长分钟(实测 6, 文档写 5), 常见 20 格 x 6 = 120 分钟;
+#   IfPre 含"附近有雨"语义(IsLocalPre=false 时本地点可能无雨);
+#   NearestPre: 最近回波距离 km, 999 为哨兵; Datetime: 数据生成时刻(钟点换算锚点)。
+# JSON 模式复用定位坐标(仅 +1 次调用); 文本模式需先 translate(+2 次)。
+
+SPARK_BLOCKS = "▁▂▃▄▅▆▇"
+NOWCAST_RAIN_EPSILON = 0.1
+
+
+def fetch_minute_cast(lat, lon, api_key):
+    """短临降水原始响应(Data 节点)。失败/非中国区域/无数据返回 None。"""
+    try:
+        data = _api_get("/nowcast_cn/v3/basic.json", api_key, q=f"{lat},{lon}")
+    except Exception:
+        return None
+    if not isinstance(data, dict) or str(data.get("Status", "0")) != "0":
+        return None
+    payload = data.get("Data")
+    if not isinstance(payload, dict) or not isinstance(payload.get("Intensity"), list):
+        return None
+    return payload
+
+
+def nowcast_peak_text(peak):
+    """短临强度峰值 -> 措辞(分档依据实测小雨样本 0.236 推定, 粗分档供参考)。"""
+    if peak is None:
+        return ""
+    if peak < 0.5:
+        return "较弱"
+    if peak < 2:
+        return "中等"
+    if peak < 8:
+        return "较强"
+    return "很强"
+
+
+def synthesize_nowcast(payload, now=None):
+    """短临原始 Data -> 摘要结构。
+
+    摘要优先透传官方 Description(含"附近有降水，出门建议带伞"等三态措辞);
+    官方缺失时回退本地合成(基于强度序列首末有效格)。
+    now 可注入基准时刻(离线测试用); 默认取数据自带的 Datetime, 再退当前时间。
+    序列末端仍有降水时无法断言"渐止"(数据窗口外未知), 以 窗口末端仍有降雨=True
+    标记并调整措辞 —— 瓯海实测出现过序列全有雨, 此时说"N分钟后渐止"是错误断言。
+    """
+    try:
+        interval = int(payload.get("Interval") or 5)
+    except (TypeError, ValueError):
+        interval = 5
+    if interval <= 0:
+        interval = 5
+    intensity = [v for v in (payload.get("Intensity") or []) if isinstance(v, (int, float))]
+    rainy = [i for i, v in enumerate(intensity) if v > NOWCAST_RAIN_EPSILON]
+    pre_type = str(payload.get("PreType") or "")
+    official_desc = str(payload.get("Description") or "").strip()
+    short_phrase = str(payload.get("ShortPhrase") or "").strip()
+    nearest = payload.get("NearestPre")
+    nearby_km = nearest if isinstance(nearest, (int, float)) and nearest != 999 else None
+
+    result = {
+        "两小时内有雨": bool(rainy),
+        "摘要": official_desc or "未来两小时无降水",
+        "降水类型": pre_type,
+    }
+    if official_desc:
+        result["官方描述"] = official_desc
+    if short_phrase:
+        result["官方短语"] = short_phrase
+
+    if not rainy:
+        # 本地点无雨但附近有回波: 官方会给出"附近有降水，出门建议带伞"
+        if nearby_km is not None:
+            result["附近降雨"] = {"距离km": nearby_km}
+        return result
+
+    if now is None:
+        anchor = payload.get("Datetime")
+        try:
+            now = datetime.datetime.fromisoformat(anchor) if anchor else datetime.datetime.now()
+        except ValueError:
+            now = datetime.datetime.now()
+    verb = "降雪" if "雪" in pre_type else "降雨"
+    # 泛化的"雨"对句子无增量, 只在 雪/冻雨 等非雨类型时标注
+    type_suffix = f"（{pre_type}）" if pre_type and pre_type != "雨" else ""
+    first, last = rainy[0], rainy[-1]
+    duration = (last - first + 1) * interval
+    truncated = last == len(intensity) - 1
+    peak = max(intensity[first:last + 1])
+    result.update({
+        "降水类型": pre_type,
+        "窗口末端仍有降雨": truncated,
+        "峰值强度": peak,
+        "步长分钟": interval,
+        "强度序列": intensity,
+    })
+    if first == 0:
+        start = "当前"
+        start_clock = "已开始"
+        if truncated:
+            stop_clock = None
+            fallback = f"当前正在{verb}，{len(intensity) * interval}分钟内暂无停歇迹象"
+        else:
+            stop_clock = (now + datetime.timedelta(minutes=(last + 1) * interval)).strftime("%H:%M")
+            fallback = f"当前正在{verb}，约{duration}分钟后渐止"
+    else:
+        start = f"约{first * interval}分钟后"
+        start_clock = (now + datetime.timedelta(minutes=first * interval)).strftime("%H:%M")
+        if truncated:
+            stop_clock = None
+            fallback = f"{start}开始{verb}，之后持续有雨"
+        else:
+            stop_clock = (now + datetime.timedelta(minutes=(last + 1) * interval)).strftime("%H:%M")
+            fallback = f"{start}开始{verb}，持续约{duration}分钟"
+    result.update({
+        "摘要": official_desc or (fallback + type_suffix),
+        "开始": start,
+        "开始钟点": start_clock,
+        "持续分钟": duration,
+        "渐止钟点": stop_clock,
+    })
+    return result
+
+
+def minute_cast_sparkline(intensity):
+    """强度序列 -> Unicode 块字符强度条(按峰值归一化, 低于阈值的值显示为无降水)。"""
+    values = [v for v in intensity if isinstance(v, (int, float))]
+    values = [v if v > NOWCAST_RAIN_EPSILON else 0 for v in values]
+    peak = max(values, default=0)
+    if peak <= 0:
+        return ""
+    top = len(SPARK_BLOCKS) - 1
+    return "".join(SPARK_BLOCKS[min(round(v * top / peak), top)] for v in values)
+
+
+def fetch_city_minute_cast(city_name, api_key):
+    """城市名 -> 短临摘要结构(translate 拿坐标 + nowcast)。任何失败返回 None。"""
+    _, loc_item = api_location_key(city_name, api_key)
+    geo = (loc_item or {}).get("GeoPosition") or {}
+    lat, lon = geo.get("Latitude"), geo.get("Longitude")
+    if lat is None or lon is None:
+        return None
+    payload = fetch_minute_cast(lat, lon, api_key)
+    if payload is None:
+        return None
+    return synthesize_nowcast(payload)
+
+
 def _api_metric(node):
     """提取温度数值: 兼容实况 {Metric:{Value}} 与逐日/逐时 {Value} 两种结构。"""
     if not isinstance(node, dict):
@@ -656,8 +878,33 @@ def _api_metric(node):
     return node.get("Value")
 
 
-def _api_clean_payload(city_name, loc_item, current, daily, hourly, air, alerts):
-    """把官方 API 响应映射到与网页方案一致的清洗结构(并扩展官方独有字段)。"""
+def _air_and_pollen_today(today_fc):
+    """DailyForecasts[0].AirAndPollen -> 今日空气质量预报(含首要污染物)。
+
+    弥补 airquality observations 实际响应没有 Category/PrimaryPollutant 的缺口
+    (文档样例宣称有, 2026-10 实测没有, 见 test/sample/api_air_jiaxing.json)。
+    """
+    for item in today_fc.get("AirAndPollen") or []:
+        if item.get("Name") == "AirQuality":
+            return {
+                "AQI": item.get("Value"),
+                "等级": item.get("Category", ""),
+                "首要污染物": item.get("Type", ""),
+            }
+    return None
+
+
+def _api_clean_payload(city_name, loc_item, current, daily, hourly, air, alerts, nowcast=None):
+    """把官方 API 响应映射到与网页方案一致的清洗结构(并扩展官方独有字段)。
+
+    字段核对依据 2026-10 实测响应(test/sample/api_*.json 为冻结样本):
+    - hourly 无 PrecipitationIntensity(文档未列, 实测也无), 不读取;
+      details=true 可得体感温度/云量/风等扩展且不增加调用次数;
+    - airquality observations 无文档样例中的 Category/PrimaryPollutant,
+      等级由本地 aqi_level_text 按国标阈值计算, 首要污染物取自 daily AirAndPollen;
+    - 逐日/逐时的 Wind.Speed 是裸 {Value} 结构, 实况是 {Metric:{Value}},
+      统一经 _api_metric 提取。
+    """
     now = current
     days = daily.get("DailyForecasts") or []
     today_fc = days[0] if days else {}
@@ -669,20 +916,31 @@ def _api_clean_payload(city_name, loc_item, current, daily, hourly, air, alerts)
     moon = today_fc.get("Moon") or {}
     wind = now.get("Wind") or {}
     wind_dir = (wind.get("Direction") or {}).get("Localized", "")
+    temp_24h = ((now.get("TemperatureSummary") or {}).get("Past24HourRange")) or {}
+    precip_24h = (now.get("PrecipitationSummary") or {}).get("Past24Hours")
+    air_fc = _air_and_pollen_today(today_fc)
 
-    forecast = []
-    for d in days:
+    def daily_row(d):
+        daypart = d.get("Day") or {}
+        nightpart = d.get("Night") or {}
         s = d.get("Sun") or {}
-        forecast.append({
+        return {
             "日期": str(d.get("Date", ""))[:10],
-            "白天": (d.get("Day") or {}).get("IconPhrase", ""),
-            "夜晚": (d.get("Night") or {}).get("IconPhrase", ""),
+            "白天": daypart.get("IconPhrase", ""),
+            "夜晚": nightpart.get("IconPhrase", ""),
             "最高温": _api_metric((d.get("Temperature") or {}).get("Maximum")),
             "最低温": _api_metric((d.get("Temperature") or {}).get("Minimum")),
-            "降水概率": (d.get("Day") or {}).get("PrecipitationProbability"),
+            "白天降水概率": daypart.get("PrecipitationProbability"),
+            "夜晚降水概率": nightpart.get("PrecipitationProbability"),
+            "白天风向": ((daypart.get("Wind") or {}).get("Direction") or {}).get("Localized", ""),
+            "白天风速": _api_metric((daypart.get("Wind") or {}).get("Speed")),
+            "夜晚风向": ((nightpart.get("Wind") or {}).get("Direction") or {}).get("Localized", ""),
+            "夜晚风速": _api_metric((nightpart.get("Wind") or {}).get("Speed")),
             "日出": str(s.get("Rise", ""))[11:16],
             "日落": str(s.get("Set", ""))[11:16],
-        })
+        }
+
+    forecast = [daily_row(d) for d in days]
 
     hours = []
     for h in hourly or []:
@@ -690,8 +948,9 @@ def _api_clean_payload(city_name, loc_item, current, daily, hourly, air, alerts)
             "时间": str(h.get("DateTime", ""))[11:16],
             "天气": h.get("IconPhrase", ""),
             "气温": _api_metric(h.get("Temperature")),
+            "体感温度": _api_metric(h.get("RealFeelTemperature")),
             "降水概率": h.get("PrecipitationProbability"),
-            "降水强度": h.get("PrecipitationIntensity", ""),
+            "白天": h.get("IsDaylight"),
         })
 
     alarm_list = []
@@ -702,16 +961,18 @@ def _api_clean_payload(city_name, loc_item, current, daily, hourly, air, alerts)
             "标题": (a.get("Description") or {}).get("Localized", ""),
             "类型": a.get("Type", ""),
             "等级": a.get("Level", ""),
+            "摘要": first_area.get("Summary", ""),
             "区域": areas,
             "开始": str(first_area.get("StartTime", ""))[:16].replace("T", " "),
             "结束": str(first_area.get("EndTime", ""))[:16].replace("T", " "),
             "来源": a.get("Source", ""),
+            "链接": a.get("Link", ""),
         })
 
     departure = _api_metric(now.get("Past24HourTemperatureDeparture"))
     wind_level = local_src.get("WindLevel")
 
-    return {
+    clean = {
         "数据源": "华风爱科开放平台(官方API)",
         "城市": {
             "名称": (loc_item or {}).get("LocalizedName") or city_name,
@@ -727,12 +988,21 @@ def _api_clean_payload(city_name, loc_item, current, daily, hourly, air, alerts)
             "风向": f"{wind_dir}风" if wind_dir else "",
             "风力": f"{wind_level}级" if wind_level is not None else "",
             "风速": wind.get("Speed", {}).get("Metric", {}).get("Value"),
+            "阵风风速": _api_metric((now.get("WindGust") or {}).get("Speed")),
             "能见度": _api_metric(now.get("Visibility")),
             "紫外线": now.get("UVIndex"),
+            "紫外线描述": now.get("UVIndexText", ""),
             "云量": now.get("CloudCover"),
             "露点": _api_metric(now.get("DewPoint")),
             "气压": _api_metric(now.get("Pressure")),
-            "24小时温度变化": departure,
+            "气压趋势": ((now.get("PressureTendency") or {}).get("LocalizedText", "")),
+            "白天": now.get("IsDayTime"),
+            "过去24小时温度": {
+                "最高": _api_metric(temp_24h.get("Maximum")),
+                "最低": _api_metric(temp_24h.get("Minimum")),
+            },
+            "过去24小时温度变化": departure,
+            "过去24小时降水mm": _api_metric(precip_24h),
             "空气质量": {
                 "AQI": aqi,
                 "等级": aqi_level_text(aqi),
@@ -748,43 +1018,58 @@ def _api_clean_payload(city_name, loc_item, current, daily, hourly, air, alerts)
             "最高温": _api_metric((today_fc.get("Temperature") or {}).get("Maximum")),
             "最低温": _api_metric((today_fc.get("Temperature") or {}).get("Minimum")),
             "白天详述": day.get("LongPhrase", ""),
-            "降水概率": day.get("PrecipitationProbability"),
+            "白天降水概率": day.get("PrecipitationProbability"),
+            "夜晚降水概率": night.get("PrecipitationProbability"),
             "日出": str(sun.get("Rise", ""))[11:16],
             "日落": str(sun.get("Set", ""))[11:16],
             "月相": moon.get("Phase", ""),
+            "月出": str(moon.get("Rise", ""))[11:16],
+            "月落": str(moon.get("Set", ""))[11:16],
             "日照时数": today_fc.get("HoursOfSun"),
         },
         "昨日": {
-            "说明": "官方无昨日实测字段; 参考实况.24小时温度变化(过去24h距平)与解读(含官方今昨对比)",
+            "说明": "官方无昨日实测字段; 参考实况.过去24小时温度(最高/最低)、过去24小时温度变化(距平)与解读(含官方今昨对比)",
         },
         "解读": (daily.get("Headline") or {}).get("Text", ""),
-        "生活指数": {},  # 官方指数接口按 ID 查询, 默认不拉取(见 /doc/api/life-index.html)
-        "五日预报": forecast,
-        "逐小时预报": hours,
-        "预警": alarm_list,
     }
+    if air_fc is not None:
+        clean["今日"]["空气质量预报"] = air_fc
+    if nowcast is not None:
+        # 短临不可用(失败/非中国区域)时整个字段不出现, 与"无雨"区分
+        clean["短临降水"] = nowcast
+    clean["生活指数"] = {}  # 官方指数接口需订阅(未订阅返回空), 见 /doc/api/life-index.html
+    clean["五日预报"] = forecast
+    clean["逐小时预报"] = hours
+    clean["预警"] = alarm_list
+    return clean
 
 
 def get_weather_data_api(city_name, api_key):
-    """官方 API 模式(6 个轻量 JSON)。任何失败返回 None, 由调用方回退网页方案。"""
+    """官方 API 模式(7 个轻量 JSON)。任何失败返回 None, 由调用方回退网页方案。"""
+    nowcast_payload = None
     try:
         loc_key, loc_item = api_location_key(city_name, api_key)
         if not loc_key:
             return None
         current = _api_get(f"/currentconditions/v1/{loc_key}.json", api_key, details="true")[0]
         daily = _api_get(f"/forecasts/v1/daily/5day/{loc_key}.json", api_key, details="true")
-        hourly = _api_get(f"/forecasts/v1/hourly/12hour/{loc_key}.json", api_key)
+        hourly = _api_get(f"/forecasts/v1/hourly/12hour/{loc_key}.json", api_key, details="true")
         air = _api_get(f"/airquality/v1/global/observations/{loc_key}.json", api_key)
         try:
             alerts = _api_get(f"/alerts/v1/{loc_key}.json", api_key)
         except Exception:
             alerts = []
+        # 短临降水: 复用定位坐标(仅 +1 次调用); 失败/非中国区域静默跳过(字段不出现)
+        geo = (loc_item or {}).get("GeoPosition") or {}
+        if geo.get("Latitude") is not None and geo.get("Longitude") is not None:
+            nowcast_payload = fetch_minute_cast(geo["Latitude"], geo["Longitude"], api_key)
     except Exception as Error:
         _note(f" [!] 官方 API 调用失败, 回退网页方案: {Error}")
         return None
+    nowcast = synthesize_nowcast(nowcast_payload) if nowcast_payload is not None else None
     return {
         "source": "openapi",
-        "clean": _api_clean_payload(city_name, loc_item, current, daily, hourly, air, alerts),
+        "clean": _api_clean_payload(city_name, loc_item, current, daily, hourly, air, alerts, nowcast),
         "raw": {
             "location": loc_item,
             "currentconditions": current,
@@ -792,6 +1077,7 @@ def get_weather_data_api(city_name, api_key):
             "hourly_forecast": hourly,
             "airquality": air,
             "alerts": alerts,
+            "minutecast": nowcast_payload,
         },
     }
 
@@ -937,6 +1223,12 @@ def main_weather_process(output=0, city_name="", city_code="", color_mode="ansi"
 
         try:
             weather_report = get_weather(code)
+            # 短临降水(可选, 官方API): 有 key 时叠加(+translate/nowcast 2 次调用);
+            # 失败/非中国区域返回 None, 雨具建议回退 dataZS 静态指数
+            api_key = _load_api_key()
+            nowcast_city = city_name or address or weather_report.snapshot.city_cn
+            if api_key and nowcast_city:
+                weather_report.minute_cast = fetch_city_minute_cast(nowcast_city, api_key)
             if output == 0:
                 report_text = weather_report.as_text(color_mode=color_mode)
                 if color_mode == "rich":

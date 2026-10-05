@@ -109,7 +109,7 @@ def load_api_key():
 
 
 def fetch_api_samples():
-    """抓取官方 API 的嘉兴样本(6 个请求, 占用每日配额)。"""
+    """抓取官方 API 的嘉兴样本(7 个请求, 占用每日配额)。"""
     api_key = load_api_key()
     if not api_key:
         print("[#] 未找到 API_KEY, 跳过官方 API 样本")
@@ -117,6 +117,7 @@ def fetch_api_samples():
     print(f"[+] 从 .env 读取 key: {api_key[:4]}{'*' * 8}(掩码)")
 
     def call(name, path, **params):
+        # 鉴权只能走查询参数: 网关实测不接受 X-Gw-API-Key/apikey 请求头(401/400)
         resp = httpx.get(
             f"{OPENAPI_BASE}{path}",
             params={"apikey": api_key, "language": "zh-cn", **params},
@@ -128,15 +129,22 @@ def fetch_api_samples():
         print(f"[+] 已保存 {name} ({len(resp.text)} 字符)")
         return resp.json()
 
-    loc = call("api_translate_jiaxing.json", "/locations/v1/cities/translate", q="嘉兴")[0]["Key"]
+    loc_item = call("api_translate_jiaxing.json", "/locations/v1/cities/translate", q="嘉兴")[0]
+    loc = loc_item["Key"]
     call("api_current_jiaxing.json", f"/currentconditions/v1/{loc}.json", details="true")
     call("api_daily5_jiaxing.json", f"/forecasts/v1/daily/5day/{loc}.json", details="true")
-    call("api_hourly12_jiaxing.json", f"/forecasts/v1/hourly/12hour/{loc}.json")
+    call("api_hourly12_jiaxing.json", f"/forecasts/v1/hourly/12hour/{loc}.json", details="true")
     call("api_air_jiaxing.json", f"/airquality/v1/global/observations/{loc}.json")
     try:
         call("api_alerts_jiaxing.json", f"/alerts/v1/{loc}.json")
     except Exception as exc:
         print(f"[!] 预警样本抓取失败(无预警时也可能非 200): {exc}")
+    try:
+        geo = loc_item.get("GeoPosition") or {}
+        call("api_nowcast_jiaxing.json", "/nowcast_cn/v3/basic.json",
+             q=f"{geo['Latitude']},{geo['Longitude']}")
+    except Exception as exc:
+        print(f"[!] 短临样本抓取失败(非中国区域/配额限制时): {exc}")
     return 0
 
 
