@@ -22,6 +22,16 @@ python GetWeather.py --debug                          # 检查上游接口状态
 - 数据源：中国天气网（定位 wgeo / 城市搜索 toy1 / 实况预报 d1），每次查询 2~3 个轻量请求（~20KB）
 - 一句话摘要由本地合成（句式对齐和风天气，规律见 [test/README.md](./test/README.md)），无第三方页面依赖
 
+## 运行效果
+
+**默认模式（网页数据源 · 零配置）**
+
+![默认模式](docs/images/web-mode.png)
+
+**官方 API 模式（含分钟级短临降水与预警）**
+
+![官方 API 模式](docs/images/api-mode.png)
+
 ## Agent Skill
 
 `skills/querying-weather/`（可安装于 `~/.pi/agent/skills/` 等位置）：

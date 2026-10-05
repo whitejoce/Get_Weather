@@ -14,6 +14,11 @@
 docs/*
 !docs/API.md
 
+# README 展示图(仅 png; HTML 渲染源文件保持本地)
+!docs/images/
+docs/images/*
+!docs/images/*.png
+
 !skills/
 !test/
 
